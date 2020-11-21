@@ -16,9 +16,17 @@ class ProductsViewSet(ModelViewSet):
     #def list(self, request, *args, **kwargs):
      #   return Response({'teste': 123})
 
-    #def create(self, request, *args, **kwargs):
-    #    return super(ProductsViewSet, self).create(self, request, *args, **kwargs)
+    def create(self, request, *args, **kwargs):
+        return super(ProductsViewSet, self).create(self, request, *args, **kwargs)
 
     #@action(methods=['get'], detail=False)
     #def denunciar(self, request):
     #    pass
+
+    @action(methods=['get'], detail=True)
+    def denunciar(self, request, pk=None):
+        pass
+
+    @action(methods=['get'], detail=False)
+    def teste(self, request):
+        pass
