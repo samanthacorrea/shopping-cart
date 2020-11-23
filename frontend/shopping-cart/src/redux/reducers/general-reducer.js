@@ -43,6 +43,47 @@ const getProduct = (id) => {
 };
 
 
+// Update stock quantity
+// const updateStock = (id, quantity) => {
+//     let url = REACT_APP_DNS + `/products/${id}`;
+//     let params = {
+//         stock_quantity: quantity
+//     }
+
+//     console.log(params)
+//     console.log(url)
+//     axios.patch(url, params)
+//         .then(result => {
+//             console.log(result);
+//         })
+//         .catch(e => {
+//             console.log(e)
+//         })
+// };
+
+
+const updateStock = (id, quantity) => {
+    let url = REACT_APP_DNS + `/products/${id}/`;
+    let params = {
+        stock_quantity: quantity
+    }
+
+    console.log(params)
+    console.log(url)
+
+
+    axios.patch(url, params)
+        .then(result => {
+            console.log(result.data);
+            Store.dispatch({ type: 'ON_DATA_PRODUCT', product: result.data })
+        })
+        .catch(e => {
+            console.log(e)
+        })
+};
+
+
+
 export const GeneralReducer = (state = initialState, action) => {
 
     // Immutability
@@ -61,6 +102,10 @@ export const GeneralReducer = (state = initialState, action) => {
         case 'ON_OPEN_SHOP_CART':
             console.log('open shop cart')
             return { ...state, page: 'ShopCart'}  
+        case 'ON_UPDATE_STOCK':
+            console.log(action)
+            updateStock(action.id, action.stockQuantity)
+            return { ...state }
         default:
             return { ...state }
     }

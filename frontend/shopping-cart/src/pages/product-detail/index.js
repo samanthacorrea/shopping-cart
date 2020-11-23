@@ -15,7 +15,7 @@ const Product = (props) => {
 
     //const [cookies, setCookie, removeCookie] = useCookies(['cookie_teste_sam']);
     
-    const saveProduct = (id, price) => {
+    const saveProduct = (id, price, stock_quantity) => {
         console.log('id ', id)
 
         let productsId = []        
@@ -29,6 +29,11 @@ const Product = (props) => {
             productsId.push(id)
             localStorage.setItem('@shopCart/items', JSON.stringify(productsId));
             localStorage.setItem('@shopCart/price', price);
+            //decrementar o stock_quantity patch
+            let quantity = stock_quantity - 1;
+
+            if (quantity > -1) props.updateStock(id, quantity)
+            else alert('Estoque indisponível')
         } else {
             console.log('já tinha um ')
             items.push(id)
@@ -36,6 +41,11 @@ const Product = (props) => {
             console.log(items)
             localStorage.setItem('@shopCart/items', JSON.stringify(items));
             localStorage.setItem('@shopCart/price', total);
+
+            let quantity = stock_quantity - 1;
+            
+            if (quantity > -1) props.updateStock(id, quantity)
+            else alert('Estoque indisponível')
 
         }
         
@@ -63,7 +73,7 @@ const Product = (props) => {
                     <div className="h4">R$ {props.product.price}</div>
                     <div className="mt-n2 mb-3">{props.product.stock_quantity>0?'Em estoque':'Produto indisponível'}</div>
                     <div>
-                        <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(props.product.id, props.product.price)}>
+                        <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(props.product.id, props.product.price, props.product.stock_quantity)}>
                             <strong>Comprar</strong>
                         </Button>
                     </div>
@@ -87,6 +97,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     getProduct: (id) => dispatch({ type: 'ON_GET_PRODUCT', id: id}),
+    updateStock: (id, stockQuantity) => dispatch({ type: 'ON_UPDATE_STOCK', id: id, stockQuantity: stockQuantity}),
+
+    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product)
