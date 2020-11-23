@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
+import { useCookies } from 'react-cookie';
+import products from '../products';
+import { Collapse } from '@material-ui/core';
 
 
 
@@ -9,6 +12,44 @@ const Product = (props) => {
 
     //let currentProduct = JSON.parse(localStorage.getItem('@library/currentProduct'));
     console.log(props.product)
+    
+
+
+    const [cookies, setCookie, removeCookie] = useCookies(['cookie_teste_sam']);
+    
+    const saveProduct = (id, price) => {
+        console.log('cookie ', id)
+
+        if (cookies.shop_cart_items) {
+            console.log('tem pelo menos um id')
+            let idProduct = {"idProduct": id}
+            cookies.shop_cart_items.push(idProduct)
+            cookies.shop_cart_total = Number(cookies.shop_cart_total) + Number(price)
+            setCookie('shop_cart_items', cookies.shop_cart_items)
+            setCookie('shop_cart_total', cookies.shop_cart_total)
+        } else {
+
+                console.log('primeira vez na primeira vez')
+                let productsId = []
+                let idProduct = {"idProduct": id}
+                productsId.push(idProduct)
+                setCookie('shop_cart_items', productsId)
+                setCookie('shop_cart_total', price)
+                console.log(cookies.shop_cart_items)
+                console.log(cookies.shop_cart_total)
+            
+        }
+    
+
+        console.log(cookies.shop_cart_items)
+        console.log(cookies.shop_cart_total)
+        
+
+        
+        //setCookie('cookie_teste_sam', id, { maxAge:60 });
+        
+    }
+
 
     return (
         <div className="container">      
@@ -31,7 +72,7 @@ const Product = (props) => {
                     <div className="h4">R$ {props.product.price}</div>
                     <div className="mt-n2 mb-3">{props.product.stock_quantity>0?'Em estoque':'Produto indisponível'}</div>
                     <div>
-                        <Button variant="contained" color="primary" size="large" disableElevation onClick={() => props.getProduct(props.product.id)}>
+                        <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(props.product.id, props.product.price)}>
                             <strong>Comprar</strong>
                         </Button>
                     </div>

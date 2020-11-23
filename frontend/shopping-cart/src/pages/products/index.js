@@ -2,15 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
+import { useCookies } from 'react-cookie';
+
 
 
 
 const Products = (props) => {    
-
-  //const getProduct = (product) => {
-    //localStorage.setItem('@library/currentProduct', JSON.stringify(product));      
-    //props.getProduct(product.id);
-  //}
     return (
         <div className="container">
             
