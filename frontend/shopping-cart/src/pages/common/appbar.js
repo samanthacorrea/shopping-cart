@@ -10,6 +10,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
 
 
 
@@ -95,10 +96,14 @@ const SearchAppBar = (props) => {
                
           </Typography>
 
-
-          <span className="mr-2">{itemsTotal>0?itemsTotal:'0'}</span>
-          <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()} style={{cursor: 'pointer'}}/>
           <span className="ml-3">R$ {total&&Number(total)>0?total:'0.00'}</span>
+
+          <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
+            <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()} style={{cursor: 'pointer'}}/>
+          </Badge>
+          
+          
+          
            {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
-import products from '../products';
 
 const Product = (props) => {    
 
@@ -16,7 +15,8 @@ const Product = (props) => {
             id: product.id,
             name: product.name,
             author: product.author,
-            price: product.price
+            price: product.price,
+            image: product.image
         }   
 
         let dictionary = {}
@@ -63,61 +63,7 @@ const Product = (props) => {
         } else {
             alert("Estoque indisponível!")
         }
-
-
-        
-
-
-        
-        
     }
-    // const saveProduct = (product) => {
-
-    //     let item = {
-    //         id: product.id,
-    //         name: product.name,
-    //         author: product.author,
-    //         price: product.price,
-    //         //stock_quantity: product.stock_quantity
-
-    //     }
-
-    //     console.log(item)
-
-    //     let productsId = []        
-
-    //     let items = JSON.parse(localStorage.getItem('@shopCart/items'))
-    //     let total = JSON.parse(localStorage.getItem('@shopCart/price'))
-
-        
-    //     if(!items) {
-    //         let quantity = product.stock_quantity - 1;
-            
-
-    //         if (quantity > -1) {
-    //             productsId.push(item)
-    //             localStorage.setItem('@shopCart/items', JSON.stringify(productsId));
-    //             localStorage.setItem('@shopCart/price', product.price);
-    //             props.updateStock(product.id, quantity, props.price)
-    //         }
-    //         else alert('Estoque indisponível')
-    //     } else {
-            
-    //         let quantity = product.stock_quantity - 1;
-            
-    //         if (quantity > -1) {
-    //             items.push(item)
-    //             total = Number(total) + Number(product.price)
-    //             localStorage.setItem('@shopCart/items', JSON.stringify(items));
-    //             localStorage.setItem('@shopCart/price', total);    
-    //             props.updateStock(product.id, quantity, total)
-    //         }
-    //         else alert('Estoque indisponível')
-
-    //     }
-        
-    // }
-
 
     return (
         <div className="container">      
