@@ -6,6 +6,8 @@ const initialState = {
     page: 'Products',
     product: null,
     currentProduct: null,
+    total: 0,
+    quantityItems: 0,
 };
 
 
@@ -17,7 +19,6 @@ const getProducts = () => {
     let url = REACT_APP_DNS + '/products/';
     axios.get(url)
         .then(result => {
-            console.log(result.data)
             Store.dispatch({ type: 'ON_PRODUCTS', products: result.data.reverse() })
         })
         .catch(e => {
@@ -29,11 +30,9 @@ getProducts();
 
 // Product detail
 const getProduct = (id) => {
-    console.log('req ', id)
     let url = REACT_APP_DNS + `/products/${id}/`;
     axios.get(url)
         .then(result => {
-            console.log('wmn')
             console.log(result.data)
             Store.dispatch({ type: 'ON_DATA_PRODUCT', product: result.data })
         })
@@ -42,40 +41,18 @@ const getProduct = (id) => {
         })
 };
 
-
-// Update stock quantity
-// const updateStock = (id, quantity) => {
-//     let url = REACT_APP_DNS + `/products/${id}`;
-//     let params = {
-//         stock_quantity: quantity
-//     }
-
-//     console.log(params)
-//     console.log(url)
-//     axios.patch(url, params)
-//         .then(result => {
-//             console.log(result);
-//         })
-//         .catch(e => {
-//             console.log(e)
-//         })
-// };
-
-
-const updateStock = (id, quantity) => {
+const updateStock = (id, quantity, price) => {
     let url = REACT_APP_DNS + `/products/${id}/`;
     let params = {
         stock_quantity: quantity
     }
 
-    console.log(params)
-    console.log(url)
-
-
     axios.patch(url, params)
         .then(result => {
             console.log(result.data);
             Store.dispatch({ type: 'ON_DATA_PRODUCT', product: result.data })
+            Store.dispatch({ type: 'ON_UPDATE_SHOP_CART_VALUES', quantity: quantity, total: price})
+
         })
         .catch(e => {
             console.log(e)
@@ -93,19 +70,17 @@ export const GeneralReducer = (state = initialState, action) => {
         case 'ON_PRODUCTS':
             return { ...state, products: action.products, page: "Products" }
         case 'ON_GET_PRODUCT':
-            console.log(action.id)
             getProduct(action.id);
             return { ...state, currentProduct: action.id}  
         case 'ON_DATA_PRODUCT':
-            console.log(action.product)
             return { ...state, product: action.product, page: 'Product'}  
         case 'ON_OPEN_SHOP_CART':
-            console.log('open shop cart')
             return { ...state, page: 'ShopCart'}  
         case 'ON_UPDATE_STOCK':
-            console.log(action)
-            updateStock(action.id, action.stockQuantity)
+            updateStock(action.id, action.stockQuantity, action.price)
             return { ...state }
+        case 'ON_UPDATE_SHOP_CART_VALUES':
+            return { ...state, quantity: action.quantity, total: action.total}
         default:
             return { ...state }
     }

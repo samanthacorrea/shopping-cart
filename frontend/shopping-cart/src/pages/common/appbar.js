@@ -71,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
 const SearchAppBar = (props) => {
   const classes = useStyles();
 
+  let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+  let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -81,7 +85,10 @@ const SearchAppBar = (props) => {
                
           </Typography>
 
-          <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()}/>
+
+          <span className="mr-2">{items&&items.length>0?items.length:'0'}</span>
+          <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()} style={{cursor: 'pointer'}}/>
+          <span className="ml-3">R$ {total&&Number(total)>0?total:'0.00'}</span>
            {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -104,7 +111,8 @@ const SearchAppBar = (props) => {
 
 
 const mapStateToProps = (state) => ({
-    
+  quantityItems: state.general.quantityItems,
+  total: state.general.total,
 });
 
 const mapDispatchToProps = (dispatch) => ({
