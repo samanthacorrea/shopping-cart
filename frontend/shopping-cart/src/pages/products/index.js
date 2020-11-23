@@ -1,75 +1,49 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: 500,
-    height: 450,
-  },
-}));
+import asset from '../../assets'
+import Button from '@material-ui/core/Button';
 
 
-const tileData = [
-       {
-        title: 'Image',
-        author: 'author',
-       },
-       {
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        title: 'Image',
-        author: 'author',
-      },
-];
 
+const Products = (props) => {    
 
-const Products = (props) => {
-    const classes = useStyles();
-
+  //const getProduct = (product) => {
+    //localStorage.setItem('@library/currentProduct', JSON.stringify(product));      
+    //props.getProduct(product.id);
+  //}
     return (
-        <div>
-            <div className={classes.root}>
-                <GridList cellHeight={160} className={classes.gridList} cols={5}>
-                    {tileData.map((tile, i) => (
-                        <GridListTile key={i}>
-                            <div>{tile.title}</div>
-                            <div>{tile.author}</div>
-                        </GridListTile>
-                    ))}
-                </GridList>
-            </div>
+        <div className="container">
+            
+              {props.products&&props.products.map((product, index) => (
+                  
+                      <div className="row mt-4" key={index}>
+                        
+                          <div className="col-2">
+                            <img src={product.image || asset.NO_IMAGE} alt={product.name} width="150" height="200"/>
+                          </div>
+                          <div className="col-9 border-bottom">
+                            <div><strong>{product.name}</strong></div>
+                            <div>por {product.author}</div>
+                            <div className="h4">R$ {product.price}</div>
+                            <div style={{'marginTop': '80px'}}>
+                              <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>
+                            </div>
+                          </div>
+                      </div> 
+              ))}
         </div>
     )
 }
 
 
 const mapStateToProps = (state) => ({
-    //products: state.general.authors,
+    products: state.general.products,
 })
 
 
 const mapDispatchToProps = (dispatch) => ({
+  getProduct: (id) => dispatch({ type: 'ON_GET_PRODUCT', id: id}),
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products)

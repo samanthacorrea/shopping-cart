@@ -7,6 +7,11 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
+import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,25 +68,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+const SearchAppBar = (props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
+          
+          
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+               
           </Typography>
-          <div className={classes.search}>
+
+          <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()}/>
+           {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -93,9 +94,22 @@ export default function SearchAppBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+          </div> */}
+          
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+
+const mapStateToProps = (state) => ({
+    
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openShopCart: () => dispatch({ type: 'ON_OPEN_SHOP_CART'}),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchAppBar)
+

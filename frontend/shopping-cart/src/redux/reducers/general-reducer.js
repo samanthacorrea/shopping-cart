@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const initialState = {
     page: 'Products',
+    product: null,
+    currentProduct: null,
 };
 
 
@@ -15,7 +17,6 @@ const getProducts = () => {
     let url = REACT_APP_DNS + '/products/';
     axios.get(url)
         .then(result => {
-            console.log('teste')
             console.log(result.data)
             Store.dispatch({ type: 'ON_PRODUCTS', products: result.data.reverse() })
         })
@@ -26,6 +27,22 @@ const getProducts = () => {
 getProducts();
 
 
+// Product detail
+const getProduct = (id) => {
+    console.log('req ', id)
+    let url = REACT_APP_DNS + `/products/${id}/`;
+    axios.get(url)
+        .then(result => {
+            console.log('wmn')
+            console.log(result.data)
+            Store.dispatch({ type: 'ON_DATA_PRODUCT', product: result.data })
+        })
+        .catch(e => {
+            console.log(e)
+        })
+};
+
+
 export const GeneralReducer = (state = initialState, action) => {
 
     // Immutability
@@ -34,6 +51,16 @@ export const GeneralReducer = (state = initialState, action) => {
     switch (action.type) {    
         case 'ON_PRODUCTS':
             return { ...state, products: action.products, page: "Products" }
+        case 'ON_GET_PRODUCT':
+            console.log(action.id)
+            getProduct(action.id);
+            return { ...state, currentProduct: action.id}  
+        case 'ON_DATA_PRODUCT':
+            console.log(action.product)
+            return { ...state, product: action.product, page: 'Product'}  
+        case 'ON_OPEN_SHOP_CART':
+            console.log('open shop cart')
+            return { ...state, page: 'ShopCart'}  
         default:
             return { ...state }
     }
