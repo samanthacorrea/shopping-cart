@@ -2,11 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
+import products from '../products';
 
 const Product = (props) => {    
 
-        
-    const saveProduct = (id, price, stock_quantity) => {
+    const saveProduct = (product) => {
+
+        let item = {
+            id: product.id,
+            name: product.name,
+            author: product.author,
+            price: product.price,
+            //stock_quantity: product.stock_quantity
+
+        }
+
+        console.log(item)
+
         let productsId = []        
 
         let items = JSON.parse(localStorage.getItem('@shopCart/items'))
@@ -14,28 +26,26 @@ const Product = (props) => {
 
         
         if(!items) {
+            let quantity = product.stock_quantity - 1;
             
-            //decrementar o stock_quantity patch
-            let quantity = stock_quantity - 1;
 
             if (quantity > -1) {
-                productsId.push(id)
+                productsId.push(item)
                 localStorage.setItem('@shopCart/items', JSON.stringify(productsId));
-                localStorage.setItem('@shopCart/price', price);
-                props.updateStock(id, quantity, price)
+                localStorage.setItem('@shopCart/price', product.price);
+                props.updateStock(product.id, quantity, props.price)
             }
             else alert('Estoque indisponível')
         } else {
             
-
-            let quantity = stock_quantity - 1;
+            let quantity = product.stock_quantity - 1;
             
             if (quantity > -1) {
-                items.push(id)
-                total = Number(total) + Number(price)
+                items.push(item)
+                total = Number(total) + Number(product.price)
                 localStorage.setItem('@shopCart/items', JSON.stringify(items));
                 localStorage.setItem('@shopCart/price', total);    
-                props.updateStock(id, quantity, total)
+                props.updateStock(product.id, quantity, total)
             }
             else alert('Estoque indisponível')
 
@@ -65,7 +75,7 @@ const Product = (props) => {
                     <div className="h4">R$ {props.product.price}</div>
                     <div className="mt-n2 mb-3">{props.product.stock_quantity>0?'Em estoque':'Produto indisponível'}</div>
                     <div>
-                        <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(props.product.id, props.product.price, props.product.stock_quantity)}>
+                        <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(props.product)}>
                             <strong>Comprar</strong>
                         </Button>
                     </div>

@@ -3,6 +3,20 @@ import { connect } from 'react-redux';
 
 
 const ShopCart = (props) => {
+
+    let arr = JSON.parse(localStorage.getItem('@shopCart/items'))
+
+    const teste = () => {
+        console.log(arr)
+
+        var novaArr = arr.filter(function(este, i) {
+            console.log(JSON.stringify(este))
+            return arr.indexOf(JSON.stringify(este)) === i;
+        });
+        console.log(novaArr);
+    }
+    teste();
+
 	return (
 		<div className="container">
             <div className="row">

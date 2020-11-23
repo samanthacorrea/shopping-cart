@@ -19,7 +19,7 @@ const getProducts = () => {
     let url = REACT_APP_DNS + '/products/';
     axios.get(url)
         .then(result => {
-            Store.dispatch({ type: 'ON_PRODUCTS', products: result.data.reverse() })
+                Store.dispatch({ type: 'ON_PRODUCTS', products: result.data.reverse() })
         })
         .catch(e => {
             console.log(e)
