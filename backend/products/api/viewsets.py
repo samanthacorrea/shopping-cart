@@ -30,3 +30,8 @@ class ProductsViewSet(ModelViewSet):
     @action(methods=['get'], detail=False)
     def teste(self, request):
         pass
+
+    def partial_update(self, request, *args, **kwargs):
+        pass
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
