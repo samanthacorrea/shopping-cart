@@ -8,12 +8,6 @@ const ShopCart = (props) => {
 
     const teste = () => {
         console.log(arr)
-
-        var novaArr = arr.filter(function(este, i) {
-            console.log(JSON.stringify(este))
-            return arr.indexOf(JSON.stringify(este)) === i;
-        });
-        console.log(novaArr);
     }
     teste();
 

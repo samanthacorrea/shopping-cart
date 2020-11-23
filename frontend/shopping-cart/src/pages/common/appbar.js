@@ -74,6 +74,16 @@ const SearchAppBar = (props) => {
   let items = JSON.parse(localStorage.getItem('@shopCart/items'))
   let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
+  const itemsQuantity = () => {
+    let itemsTotal = 0;
+    for (let item in items) {
+      itemsTotal += items[item].count;
+    }
+
+    return itemsTotal;
+  }
+
+  let itemsTotal = itemsQuantity();
 
   return (
     <div className={classes.root}>
@@ -86,7 +96,7 @@ const SearchAppBar = (props) => {
           </Typography>
 
 
-          <span className="mr-2">{items&&items.length>0?items.length:'0'}</span>
+          <span className="mr-2">{itemsTotal>0?itemsTotal:'0'}</span>
           <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()} style={{cursor: 'pointer'}}/>
           <span className="ml-3">R$ {total&&Number(total)>0?total:'0.00'}</span>
            {/* <div className={classes.search}>

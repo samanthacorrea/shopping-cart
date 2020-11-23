@@ -8,50 +8,115 @@ const Product = (props) => {
 
     const saveProduct = (product) => {
 
-        let item = {
-            id: product.id,
-            name: product.name,
-            author: product.author,
-            price: product.price,
-            //stock_quantity: product.stock_quantity
-
-        }
-
-        console.log(item)
-
-        let productsId = []        
 
         let items = JSON.parse(localStorage.getItem('@shopCart/items'))
         let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
-        
-        if(!items) {
-            let quantity = product.stock_quantity - 1;
-            
+        let item = {
+            id: product.id,
+            name: product.name,
+            author: product.author,
+            price: product.price
+        }   
 
-            if (quantity > -1) {
-                productsId.push(item)
-                localStorage.setItem('@shopCart/items', JSON.stringify(productsId));
+        let dictionary = {}
+        console.log(dictionary[product.id])
+        console.log(items)
+
+        let quantity = product.stock_quantity - 1;
+
+        if (quantity > -1) {
+            if (!items && !dictionary[product.id]) {
+                console.log('não existe, add tudo')
+                item.count = 1
+                dictionary[product.id] = item
+                localStorage.setItem('@shopCart/items', JSON.stringify(dictionary));
+
+
                 localStorage.setItem('@shopCart/price', product.price);
-                props.updateStock(product.id, quantity, props.price)
-            }
-            else alert('Estoque indisponível')
-        } else {
-            
-            let quantity = product.stock_quantity - 1;
-            
-            if (quantity > -1) {
-                items.push(item)
-                total = Number(total) + Number(product.price)
-                localStorage.setItem('@shopCart/items', JSON.stringify(items));
-                localStorage.setItem('@shopCart/price', total);    
-                props.updateStock(product.id, quantity, total)
-            }
-            else alert('Estoque indisponível')
+                    props.updateStock(product.id, quantity, props.price)
+            } else {
+                console.log(items[product.id])
+                if (items[product.id]) {
+                    console.log('existe o id, atualiza o count')
+                    items[product.id].count += 1
+                    console.log(items[product.id].count)
+                    localStorage.setItem('@shopCart/items', JSON.stringify(items));
 
+
+                    total = Number(total) + Number(product.price)
+                    localStorage.setItem('@shopCart/price', total);
+                    props.updateStock(product.id, quantity, total)
+                } else {
+                    console.log('adiciona um novo indice')
+                    item.count = 1
+                    items[product.id] = item
+                    console.log(items)
+                    localStorage.setItem('@shopCart/items', JSON.stringify(items));
+
+                    total = Number(total) + Number(product.price)
+                    localStorage.setItem('@shopCart/price', total);
+                    props.updateStock(product.id, quantity, total)
+                }
+                    
+            }
+        } else {
+            alert("Estoque indisponível!")
         }
+
+
+        
+
+
+        
         
     }
+    // const saveProduct = (product) => {
+
+    //     let item = {
+    //         id: product.id,
+    //         name: product.name,
+    //         author: product.author,
+    //         price: product.price,
+    //         //stock_quantity: product.stock_quantity
+
+    //     }
+
+    //     console.log(item)
+
+    //     let productsId = []        
+
+    //     let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+    //     let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+
+        
+    //     if(!items) {
+    //         let quantity = product.stock_quantity - 1;
+            
+
+    //         if (quantity > -1) {
+    //             productsId.push(item)
+    //             localStorage.setItem('@shopCart/items', JSON.stringify(productsId));
+    //             localStorage.setItem('@shopCart/price', product.price);
+    //             props.updateStock(product.id, quantity, props.price)
+    //         }
+    //         else alert('Estoque indisponível')
+    //     } else {
+            
+    //         let quantity = product.stock_quantity - 1;
+            
+    //         if (quantity > -1) {
+    //             items.push(item)
+    //             total = Number(total) + Number(product.price)
+    //             localStorage.setItem('@shopCart/items', JSON.stringify(items));
+    //             localStorage.setItem('@shopCart/price', total);    
+    //             props.updateStock(product.id, quantity, total)
+    //         }
+    //         else alert('Estoque indisponível')
+
+    //     }
+        
+    // }
 
 
     return (

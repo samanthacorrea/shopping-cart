@@ -46,7 +46,8 @@ const updateStock = (id, quantity, price) => {
     let params = {
         stock_quantity: quantity
     }
-
+    
+    console.log(price)
     axios.patch(url, params)
         .then(result => {
             console.log(result.data);
