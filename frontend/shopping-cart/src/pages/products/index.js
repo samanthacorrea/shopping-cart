@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
-import { useCookies } from 'react-cookie';
 
+import { Link } from 'react-router-dom'
 
 
 
@@ -23,7 +23,9 @@ const Products = (props) => {
                             <div>por {product.author}</div>
                             <div className="h4">R$ {product.price}</div>
                             <div style={{'marginTop': '80px'}}>
-                              <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>
+                              
+                                <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>
+                              
                             </div>
                           </div>
                       </div> 
