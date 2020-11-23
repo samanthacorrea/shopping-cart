@@ -31,7 +31,10 @@ class ProductsViewSet(ModelViewSet):
     def teste(self, request):
         pass
 
+    def get_serializer(self, *args, **kwargs):
+        kwargs['partial'] = True
+        return super(ProductsViewSet, self).get_serializer(*args, **kwargs)
+
     def partial_update(self, request, *args, **kwargs):
-        pass
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
