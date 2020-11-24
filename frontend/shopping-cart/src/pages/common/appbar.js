@@ -11,7 +11,8 @@ import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
-
+import { Link } from 'react-router-dom'
+import asset from '../../assets'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -97,7 +98,10 @@ const SearchAppBar = (props) => {
           
           
           <Typography className={classes.title} variant="h6" noWrap>
-               
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+              <img src={asset.LOGO} width="80" height="50"/>
+              <strong>MASSAM'S SHOP</strong>
+            </Link>
           </Typography>
           <span>
 
@@ -105,9 +109,11 @@ const SearchAppBar = (props) => {
           </span>
           <span className="mr-3 h5">R$ {total&&Number(total)>0?currency(total):'0,00'}</span>
 
-          <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
-            <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()} style={{cursor: 'pointer'}}/>
-          </Badge>
+          <Link to="/shop-cart" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+            <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
+              <ShoppingCartRoundedIcon fontSize="large"/>
+            </Badge>
+          </Link>
           
         </Toolbar>
       </AppBar>

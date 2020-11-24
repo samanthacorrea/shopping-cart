@@ -4,8 +4,10 @@ import asset from '../../assets'
 import Button from '@material-ui/core/Button';
 
 const Product = (props) => {    
+    //console.log(props.match.params.id)
 
-
+    console.log(props.getProduct(props.match.params.id))
+    console.log(props.product)
     const currency = (value) => {
         return value.toLocaleString('pt-br', {minimumFractionDigits: 2})
     }
@@ -73,7 +75,10 @@ const Product = (props) => {
 
     return (
         <div className="container">      
-            <div className="row mt-5">
+            {
+                props.product?
+
+                <div className="row mt-5">
                 
                 <div className="col-3">
                     <img src={props.product.image || asset.NO_IMAGE} alt={props.product.name} width="250" height="350"/>
@@ -101,6 +106,12 @@ const Product = (props) => {
                             
     
             </div> 
+
+            :
+
+            <div>Produto não encontrado!</div>
+            }
+            
 
         </div>
     )

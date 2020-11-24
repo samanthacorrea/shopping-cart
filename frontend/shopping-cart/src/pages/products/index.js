@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom'
 
 
 const Products = (props) => {    
@@ -20,8 +21,10 @@ const Products = (props) => {
                             <div>por {product.author}</div>
                             <div className="h4">R$ {product.price.toString().toLocaleString('pt-br', {minimumFractionDigits: 2})}</div>
                             <div style={{'marginTop': '80px'}}>
-                              
-                                <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>
+                                <Link to={"/product/" + product.id}>
+                                  <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>
+                                </Link> 
+                                
                               
                             </div>
                           </div>
