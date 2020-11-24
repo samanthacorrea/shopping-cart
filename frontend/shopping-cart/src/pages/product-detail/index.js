@@ -5,6 +5,12 @@ import Button from '@material-ui/core/Button';
 
 const Product = (props) => {    
 
+
+    const currency = (value) => {
+        return value.toLocaleString('pt-br', {minimumFractionDigits: 2})
+    }
+
+      
     const saveProduct = (product) => {
 
 
@@ -83,7 +89,7 @@ const Product = (props) => {
                 </div>
 
                 <div className="col-2 text-right">
-                    <div className="h4">R$ {props.product.price}</div>
+                    <div className="h4">R$ {currency(props.product.price)}</div>
                     <div className="mt-n2 mb-3">{props.product.stock_quantity>0?'Em estoque':'Produto indisponível'}</div>
                     <div>
                         <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(props.product)}>

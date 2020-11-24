@@ -8,6 +8,7 @@ const initialState = {
     currentProduct: null,
     total: 0,
     quantityItems: 0,
+    brCurrency: null
 };
 
 
@@ -59,6 +60,12 @@ const updateStock = (id, quantity, price) => {
             console.log(e)
         })
 };
+
+
+const currency = (value) => {
+    value.toLocaleString('pt-br', {minimumFractionDigits: 2})
+}
+
 
 
 

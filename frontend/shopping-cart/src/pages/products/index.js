@@ -18,7 +18,7 @@ const Products = (props) => {
                           <div className="col-9 border-bottom">
                             <div><strong>{product.name}</strong></div>
                             <div>por {product.author}</div>
-                            <div className="h4">R$ {product.price}</div>
+                            <div className="h4">R$ {product.price.toString().toLocaleString('pt-br', {minimumFractionDigits: 2})}</div>
                             <div style={{'marginTop': '80px'}}>
                               
                                 <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>

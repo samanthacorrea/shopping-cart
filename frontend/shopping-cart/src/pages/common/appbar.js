@@ -75,6 +75,10 @@ const SearchAppBar = (props) => {
   let items = JSON.parse(localStorage.getItem('@shopCart/items'))
   let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
+  const currency = (value) => {
+    return value.toLocaleString('pt-br', {minimumFractionDigits: 2})
+  }
+
   const itemsQuantity = () => {
     let itemsTotal = 0;
     for (let item in items) {
@@ -95,28 +99,15 @@ const SearchAppBar = (props) => {
           <Typography className={classes.title} variant="h6" noWrap>
                
           </Typography>
+          <span>
 
-          <span className="ml-3">R$ {total&&Number(total)>0?total:'0.00'}</span>
+
+          </span>
+          <span className="mr-3 h5">R$ {total&&Number(total)>0?currency(total):'0,00'}</span>
 
           <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
             <ShoppingCartRoundedIcon fontSize="large" onClick={() => props.openShopCart()} style={{cursor: 'pointer'}}/>
           </Badge>
-          
-          
-          
-           {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div> */}
           
         </Toolbar>
       </AppBar>
