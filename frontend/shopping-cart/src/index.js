@@ -17,7 +17,7 @@ ReactDOM.render(
                 <AppBar />
                 <Route path="/" exact={true} component={Products} />
                 <Route path="/products/:id" component={Product} />
-                <Route path="/shop-cart" component={ShopCart    } />
+                <Route path="/shop-cart" component={ShopCart} />
             </Provider>
         </Switch>
     </Router>

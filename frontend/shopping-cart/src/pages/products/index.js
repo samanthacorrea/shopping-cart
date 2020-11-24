@@ -21,7 +21,7 @@ const Products = (props) => {
                             <div>por {product.author}</div>
                             <div className="h4">R$ {product.price.toString().toLocaleString('pt-br', {minimumFractionDigits: 2})}</div>
                             <div style={{'marginTop': '80px'}}>
-                                <Link to={"/product/" + product.id}>
+                                <Link to={"/products/" + product.id}>
                                   <Button onClick={() => props.getProduct(product.id)} variant="contained">Mais detalhes</Button>
                                 </Link> 
                                 

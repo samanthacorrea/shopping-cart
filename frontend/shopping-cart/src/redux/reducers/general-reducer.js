@@ -8,7 +8,6 @@ const initialState = {
     currentProduct: null,
     total: 0,
     quantityItems: 0,
-    brCurrency: null
 };
 
 
@@ -42,32 +41,46 @@ const getProduct = (id) => {
         })
 };
 
-const updateStock = (id, quantity, price) => {
+const updateStock = (id, quantity, total) => {
+    console.log(id + " " + quantity + " " + total)
     let url = REACT_APP_DNS + `/products/${id}/`;
     let params = {
         stock_quantity: quantity
     }
     
-    console.log(price)
     axios.patch(url, params)
         .then(result => {
             console.log(result.data);
             Store.dispatch({ type: 'ON_DATA_PRODUCT', product: result.data })
-            Store.dispatch({ type: 'ON_UPDATE_SHOP_CART_VALUES', quantity: quantity, total: price})
-
+            Store.dispatch({ type: 'ON_UPDATE_SHOP_CART_VALUES', quantity: quantity, total: total})
         })
         .catch(e => {
             console.log(e)
         })
 };
 
+const addItem = (id) => {
+    console.log(id)
+    let url = REACT_APP_DNS + `/products/${id}/`;
+ 
 
-const currency = (value) => {
-    value.toLocaleString('pt-br', {minimumFractionDigits: 2})
+    let items = JSON.parse(localStorage.getItem('@shopCart/items')).id
+    console.log(items)
+
+    // axios.patch(url, params)
+    // .then(result => {
+    //     console.log(result.data);
+    //     Store.dispatch({ type: 'ON_DATA_PRODUCT', product: result.data })
+    //     Store.dispatch({ type: 'ON_UPDATE_SHOP_CART_VALUES', quantity: quantity, total: total})
+    // })
+    // .catch(e => {
+    //     console.log(e)
+    // })
 }
 
-
-
+const removeItem = (id) => {
+    
+}
 
 export const GeneralReducer = (state = initialState, action) => {
 
@@ -87,6 +100,15 @@ export const GeneralReducer = (state = initialState, action) => {
         case 'ON_UPDATE_STOCK':
             updateStock(action.id, action.stockQuantity, action.price)
             return { ...state }
+        case 'ON_ADD_ITEM':
+            console.log(action)
+            addItem(action.id)
+            return { ...state }
+        case 'ON_REMOVE_ITEM':
+            console.log(action)
+            removeItem(action.id)
+            return { ...state }
+    
         case 'ON_UPDATE_SHOP_CART_VALUES':
             return { ...state, quantity: action.quantity, total: action.total}
         default:
