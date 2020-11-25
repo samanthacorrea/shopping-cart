@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Link } from 'react-router-dom'
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import helper from '../../config/helper'
+import requester from '../../config/requester'
 
 
 
@@ -32,7 +32,7 @@ const ShopCart = (props) => {
     const addItem = (id) => {
         console.log(id)
         
-        helper.decrementStock(id).then(result => {
+        requester.decrementStock(id).then(result => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
@@ -61,7 +61,7 @@ const ShopCart = (props) => {
     const removeItem = (id) => {
         console.log(id)
         
-        helper.incrementStock(id).then(result => {
+        requester.incrementStock(id).then(result => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))

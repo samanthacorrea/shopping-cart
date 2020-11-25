@@ -22,11 +22,11 @@ const getProduct = (id) => {
     return axios.get(url)
 };
 
-const productRequests =  {
+const requesters =  {
     decrementStock,
     incrementStock,
     getProducts,
     getProduct,
 };
 
-export default productRequests
+export default requesters

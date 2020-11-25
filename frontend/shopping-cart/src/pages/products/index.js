@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
-import helper from '../../config/helper'
+import requester from '../../config/requester'
 
 
 const Products = (props) => {  
     const [products, setProducts] = useState();
   
     useEffect(() => {
-      helper.getProducts().then( result => {
+    requester.getProducts().then( result => {
           setProducts(result.data.reverse())
       }).catch(error => console.log(error))
     },[]);

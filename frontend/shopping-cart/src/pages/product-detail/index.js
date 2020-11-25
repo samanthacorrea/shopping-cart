@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
-import helper from '../../config/helper'
+import requester from '../../config/requester'
 
 const Product = (props) => {    
     const [product, setProduct] = useState();
   
     useEffect(() => {
-      helper.getProduct(props.match.params.id).then( result => {
+      requester.getProduct(props.match.params.id).then( result => {
           setProduct(result.data)
       }).catch(error => console.log(error))
     },[props.match.params.id]);
@@ -18,7 +18,7 @@ const Product = (props) => {
     }
 
     const saveProduct = (product) => {
-        helper.decrementStock(product.id).then(result => {
+        requester.decrementStock(product.id).then(result => {
             let product = result.data
             setProduct(product)
             let dictionary = {}
