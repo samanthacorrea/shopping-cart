@@ -1,6 +1,6 @@
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from products.models import Products
 from .serializers import ProductsSerializer
@@ -40,15 +40,18 @@ class ProductsViewSet(ModelViewSet):
             product.stock_quantity -= 1
             request.data.update({'stock_quantity': product.stock_quantity})
             return self.update(request, *args, **kwargs)
-        return Response({'message': 'Não há mais estoque desse produto!'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Não há mais estoque desse produto!'}, status=status.HTTP_200_OK)
 
     @action(methods=["patch"], detail=True)
     def increment(self, request, pk=None, *args, **kwargs):
         kwargs['partial'] = True
         product = Products.objects.get(pk=pk)
-        product.stock_quantity += 1
-        request.data.update({'stock_quantity': product.stock_quantity})
-        return self.update(request, *args, **kwargs)
+        request._full_data = {'stock_quantity': (product.stock_quantity + int(request.data.get('stock_quantity')))}
+        if(product.stock_quantity+1) < int(request.data.get('stock_quantity')):
+            product.stock_quantity += 1
+            request.data.update({'stock_quantity': product.stock_quantity})
+            return self.update(request, *args, **kwargs)
+        return Response({'message': 'Estoque máximo atingido'}, status=status.HTTP_200_OK)
 
     @action(methods=["patch"], detail=True)
     def update_stock(self, request, pk=None, *args, **kwargs):

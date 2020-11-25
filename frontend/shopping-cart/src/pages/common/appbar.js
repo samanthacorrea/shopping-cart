@@ -29,8 +29,8 @@ const SearchAppBar = (props) => {
 
   
 
-  let items = JSON.parse(localStorage.getItem('@shopCart/items'))
-  let price = JSON.parse(localStorage.getItem('@shopCart/price'))
+  let items = JSON.parse(localStorage.getItem('@shopCart/items')) || null
+  let price = JSON.parse(localStorage.getItem('@shopCart/price')) || null
   
 
   useEffect(() => {

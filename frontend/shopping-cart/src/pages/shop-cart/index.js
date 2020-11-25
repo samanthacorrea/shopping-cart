@@ -26,47 +26,49 @@ const ShopCart = (props) => {
 
 
     const addItem = (id) => {
-        requester.decrementStock(id).then(result => {
+        requester.decrementStock(id).then(result => {      
+            let product = result.data
 
+            if (!(product&&product.message)) {
             
-            let items = JSON.parse(localStorage.getItem('@shopCart/items'))
-            let total = JSON.parse(localStorage.getItem('@shopCart/price'))
-            console.log("items no carrinho", items[id].count)
-            console.log("items em stock", result.data.stock_quantity)
-
-            if (result.data.stock_quantity > 0) {
+                console.log(result.data)
+                let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+                let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+                
 
                 console.log('entrou')
                 items[id].count += 1
+                console.log("items no carrinho", items[id].count)
+                console.log("items em stock", result.data.stock_quantity)
                 localStorage.setItem('@shopCart/items', JSON.stringify(items));
                 props.updateShopCartItems(items) 
-    
+
                 total = Number(total) + Number(items[id].price)
                 localStorage.setItem('@shopCart/price', total);
                 props.updateTotalPurchaseAmount(total)
+            } else {
+                alert(product.message)
             }
 
         }).catch(
             error => {
-                if (error.response && error.response.status === 400) {
-                    window.confirm("Esse item não está mais disponível em estoque.")
-                }
+                console.log(error)
             })               
     }
 
 
-    const removeItem = (id) => {
-        requester.incrementStock(id).then(result => {
+    const removeItem = (id, shopItemsQuantity) => {
+        requester.incrementStock(id, shopItemsQuantity).then(result => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
-            console.log(result.data.stock_quantity)
-            if (result.data.stock_quantity > 1 && items[id].count > 0) {
+
+            if(items[id].count > 1) {
                 items[id].count -= 1
                 localStorage.setItem('@shopCart/items', JSON.stringify(items));
-
+    
                 props.updateShopCartItems(items) 
-
+    
                 total = Number(total) - Number(items[id].price)
                 localStorage.setItem('@shopCart/price', total);
                 props.updateTotalPurchaseAmount(total)
@@ -128,7 +130,7 @@ const ShopCart = (props) => {
                                             <div className="mt-4">
                                                 <span>Qtd.:</span>
                                                 
-                                                <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => removeItem(itemsList[index].id)}/>
+                                                <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => removeItem(itemsList[index].id, itemsList[index].count)}/>
                                                 <span className="ml-3 mr-3">{itemsList[index].count}</span>
                                                 <AddIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => addItem(itemsList[index].id)}/>
                            

@@ -7,9 +7,12 @@ const decrementStock = (id) => {
     return axios.patch(url)
 }
 
-const incrementStock = (id) => {
+const incrementStock = (id, shopItemsQuantity) => {
     let url = REACT_APP_DNS + `/products/${id}/increment/`;
-    return axios.patch(url)
+    let params = {
+        "stock_quantity": shopItemsQuantity
+    }
+    return axios.patch(url, params)
 }
 
 const giveBackAllItemsToStock = (id, shopItemsQuantity) => {

@@ -19,58 +19,60 @@ const Product = (props) => {
     const saveProduct = (product) => {
         requester.decrementStock(product.id).then(result => {
             let product = result.data
-            console.log(result.data)
-            setProduct(product)
+
+            if (!(product&&product.message)) {
+                setProduct(product)
             
-            let item = {
-                id: product.id,
-                name: product.name,
-                author: product.author,
-                price: product.price,
-                image: product.image
-            }
+                let item = {
+                    id: product.id,
+                    name: product.name,
+                    author: product.author,
+                    price: product.price,
+                    image: product.image
+                }
 
-            let items = JSON.parse(localStorage.getItem('@shopCart/items'))
-            let total = JSON.parse(localStorage.getItem('@shopCart/price'))
-            let dictionary = {}
+                let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+                let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+                let dictionary = {}
 
-            if (!items && !dictionary[product.id]) {
-                //console.log('não existe, add tudo')
-                item.count = 1
-                dictionary[product.id] = item
-                localStorage.setItem('@shopCart/items', JSON.stringify(dictionary));
-                localStorage.setItem('@shopCart/price', product.price);
+                if (!items && !dictionary[product.id]) {
+                    //console.log('não existe, add tudo')
+                    item.count = 1
+                    dictionary[product.id] = item
+                    localStorage.setItem('@shopCart/items', JSON.stringify(dictionary));
+                    localStorage.setItem('@shopCart/price', product.price);
 
-                props.updateShopCartItems(dictionary)
-                props.updateTotalPurchaseAmount(product.price)
-                
-            } else {
-                //console.log(items[product.id])
-                if (items[product.id]) {
-                    items[product.id].count += 1
-                    localStorage.setItem('@shopCart/items', JSON.stringify(items));
-                    total = Number(total) + Number(product.price)
-                    localStorage.setItem('@shopCart/price', total);
-                    props.updateShopCartItems(items)
-                    props.updateTotalPurchaseAmount(total)
+                    props.updateShopCartItems(dictionary)
+                    props.updateTotalPurchaseAmount(product.price)
                     
                 } else {
-                    item.count = 1
-                    items[product.id] = item
-                    localStorage.setItem('@shopCart/items', JSON.stringify(items));
-                    total = Number(total) + Number(product.price)
-                    localStorage.setItem('@shopCart/price', total);
-                    props.updateShopCartItems(items)
-                    props.updateTotalPurchaseAmount(total)
-                } 
+                    //console.log(items[product.id])
+                    if (items[product.id]) {
+                        items[product.id].count += 1
+                        localStorage.setItem('@shopCart/items', JSON.stringify(items));
+                        total = Number(total) + Number(product.price)
+                        localStorage.setItem('@shopCart/price', total);
+                        props.updateShopCartItems(items)
+                        props.updateTotalPurchaseAmount(total)
+                        
+                    } else {
+                        item.count = 1
+                        items[product.id] = item
+                        localStorage.setItem('@shopCart/items', JSON.stringify(items));
+                        total = Number(total) + Number(product.price)
+                        localStorage.setItem('@shopCart/price', total);
+                        props.updateShopCartItems(items)
+                        props.updateTotalPurchaseAmount(total)
+                    } 
+                }
+            } else {
+                alert(product.message)
             }
+        
         }).catch(
             error => {
                 console.log(error)
-                if (error.response && error.response.status === 400) {
-                    window.confirm("Esse item não está mais disponível em estoque.")
-                }
-            })   
+        })   
     }
 
     return (
