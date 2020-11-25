@@ -7,7 +7,11 @@ const decrementStock = (id) => {
     return axios.patch(url)
 }
 
-// List all products
+const incrementStock = (id) => {
+    let url = REACT_APP_DNS + `/products/${id}/increment/`;
+    return axios.patch(url)
+}
+
 const getProducts = () => {
     let url = REACT_APP_DNS + '/products/';
     return axios.get(url)
@@ -18,9 +22,11 @@ const getProduct = (id) => {
     return axios.get(url)
 };
 
-
-export default {
+const productRequests =  {
     decrementStock,
+    incrementStock,
     getProducts,
     getProduct,
 };
+
+export default productRequests

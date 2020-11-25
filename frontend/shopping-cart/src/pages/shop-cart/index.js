@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import asset from '../../assets'
@@ -11,8 +11,6 @@ import helper from '../../config/helper'
 
 
 const ShopCart = (props) => {
-
-    const [countItem, setCountItem] = useState();
 
     let items = JSON.parse(localStorage.getItem('@shopCart/items'))
     let total = JSON.parse(localStorage.getItem('@shopCart/price'))
@@ -31,7 +29,7 @@ const ShopCart = (props) => {
         return parseFloat(value).toLocaleString('pt-br', {minimumFractionDigits: 2})
     }
     
-    const saveProduct = (id) => {
+    const addItem = (id) => {
         console.log(id)
         
         helper.decrementStock(id).then(result => {
@@ -39,17 +37,42 @@ const ShopCart = (props) => {
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
-            console.log(items[id])
-            
             items[id].count += 1
+            localStorage.setItem('@shopCart/items', JSON.stringify(items));
+
+            props.updateShopCartItems(items) 
+
+            total = Number(total) + Number(items[id].price)
+            localStorage.setItem('@shopCart/price', total);
+            props.updateTotalPurchaseAmount(total)
+
+        }).catch(
+            error => {
+                console.log(error.response.status)
+                if (error.response.status === 400) {
+                    window.confirm("Esse item não está mais disponível em estoque.")
+                }
+            })
+        
+                    
+    }
+
+
+    const removeItem = (id) => {
+        console.log(id)
+        
+        helper.incrementStock(id).then(result => {
+
+            let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+            let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+            
+            items[id].count -= 1
             console.log(items[id].count)
             localStorage.setItem('@shopCart/items', JSON.stringify(items));
 
             props.updateShopCartItems(items) 
-            console.log(props.shopCartItems[id].count)
-            
 
-            total = Number(total) + Number(items[id].price)
+            total = Number(total) - Number(items[id].price)
             localStorage.setItem('@shopCart/price', total);
             props.updateTotalPurchaseAmount(total)
 
@@ -87,9 +110,9 @@ const ShopCart = (props) => {
                                             <div className="mt-4">
                                                 <span>Qtd.:</span>
                                                 
-                                                <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => props.removeItem(itemsList[index].id)}/>
+                                                <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => removeItem(itemsList[index].id)}/>
                                                 <span className="ml-3 mr-3">{itemsList[index].count}</span>
-                                                <AddIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => saveProduct(itemsList[index].id)}/>
+                                                <AddIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => addItem(itemsList[index].id)}/>
                            
                                                 <span className="ml-4 mr-3">|</span>
 
@@ -138,7 +161,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getStockQuantityById: (id) => dispatch({ type: 'ON_GET_STOCK_QUANTITY', id: id}),
     addItem: (id) => dispatch({ type: 'ON_ADD_ITEM', id: id}),
     removeItem: (id) => dispatch({ type: 'ON_ITEM_ITEM', id: id}),
     updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'

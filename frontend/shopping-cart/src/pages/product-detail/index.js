@@ -11,7 +11,7 @@ const Product = (props) => {
       helper.getProduct(props.match.params.id).then( result => {
           setProduct(result.data)
       }).catch(error => console.log(error))
-    },[]);
+    },[props.match.params.id]);
 
     const currency = (value) => {
         return parseFloat(value).toLocaleString('pt-br', {minimumFractionDigits: 2})
