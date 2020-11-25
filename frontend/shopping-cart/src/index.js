@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
 import Product from './pages/product-detail'
 import Products from './pages/products'
 import ShopCart from './pages/shop-cart'

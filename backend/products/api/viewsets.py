@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 from products.models import Products
 from .serializers import ProductsSerializer
 import logging
-
+from rest_framework import status
 
 
 
@@ -26,15 +26,24 @@ class ProductsViewSet(ModelViewSet):
         logger.error(request.data)
         return self.update(request, *args, **kwargs)
 
+    @action(methods=["get"], detail=True)
+    def stock(self, request, pk=None):
+        products = Products.objects.get(pk=pk)
+        logger = logging.getLogger(__name__)
+        logger.error(products.stock_quantity)
+        return Response({'stock_quantity': products.stock_quantity})
+
     @action(methods=["patch"], detail=True)
     def decrement(self, request, pk=None, *args, **kwargs):
         kwargs['partial'] = True
         product = Products.objects.get(pk=pk)
         logger = logging.getLogger(__name__)
         logger.error(request.data)
-        product.stock_quantity -= 1
-        request.data.update({'stock_quantity': product.stock_quantity})
-        return self.update(request, *args, **kwargs)
+        if product.stock_quantity > 0:
+            product.stock_quantity -= 1
+            request.data.update({'stock_quantity': product.stock_quantity})
+            return self.update(request, *args, **kwargs)
+        return Response({'message': 'Não há mais estoque desse produto!'}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=["patch"], detail=True)
     def increment(self, request, pk=None, *args, **kwargs):

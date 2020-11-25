@@ -1,15 +1,10 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import { Link } from 'react-router-dom'
 import asset from '../../assets'
@@ -19,53 +14,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   title: {
     flexGrow: 1,
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
     },
   },
 }));
@@ -74,10 +27,9 @@ const SearchAppBar = (props) => {
   const classes = useStyles();
 
   let items = JSON.parse(localStorage.getItem('@shopCart/items'))
-  let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
   const currency = (value) => {
-    return value.toLocaleString('pt-br', {minimumFractionDigits: 2})
+    return parseFloat(value).toLocaleString('pt-br', {minimumFractionDigits: 2})
   }
 
   const itemsQuantity = () => {
@@ -90,31 +42,24 @@ const SearchAppBar = (props) => {
   }
 
   let itemsTotal = itemsQuantity();
+  
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          
-          
           <Typography className={classes.title} variant="h6" noWrap>
             <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-              <img src={asset.LOGO} width="80" height="50"/>
+              <img src={asset.LOGO} alt="logo" width="80" height="50"/>
               <strong>MASSAM'S SHOP</strong>
             </Link>
           </Typography>
-          <span>
-
-
-          </span>
-          <span className="mr-3 h5">R$ {total&&Number(total)>0?currency(total):'0,00'}</span>
-
+          <span className="mr-3 h5">R$ {props.totalPurchaseAmount?currency(props.totalPurchaseAmount):'0,00'}</span>
           <Link to="/shop-cart" style={{ color: 'inherit', textDecoration: 'inherit'}}>
             <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
               <ShoppingCartRoundedIcon fontSize="large"/>
             </Badge>
           </Link>
-          
         </Toolbar>
       </AppBar>
     </div>
@@ -123,12 +68,11 @@ const SearchAppBar = (props) => {
 
 
 const mapStateToProps = (state) => ({
-  quantityItems: state.general.quantityItems,
-  total: state.general.total,
+  totalPurchaseAmount: state.general.totalPurchaseAmount,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  openShopCart: () => dispatch({ type: 'ON_OPEN_SHOP_CART'}),
+  updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchAppBar)
