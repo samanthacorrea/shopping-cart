@@ -34,12 +34,10 @@ const SearchAppBar = (props) => {
     for (let item in items) {
       itemsTotal += items[item].count;
     }
-
     return itemsTotal;
   }
 
   let itemsTotal = itemsQuantity();
-  
 
   return (
     <div className={classes.root}>
@@ -63,14 +61,10 @@ const SearchAppBar = (props) => {
   );
 }
 
-
 const mapStateToProps = (state) => ({
   totalPurchaseAmount: state.general.totalPurchaseAmount,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchAppBar)
+export default connect(mapStateToProps)(SearchAppBar)
 

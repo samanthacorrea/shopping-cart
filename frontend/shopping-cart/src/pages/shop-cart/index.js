@@ -45,7 +45,7 @@ const ShopCart = (props) => {
         }).catch(
             error => {
                 console.log(error.response.status)
-                if (error.response.status === 400) {
+                if (error.response && error.response.status === 400) {
                     window.confirm("Esse item não está mais disponível em estoque.")
                 }
             })
@@ -63,7 +63,6 @@ const ShopCart = (props) => {
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
             
             items[id].count -= 1
-            console.log(items[id].count)
             localStorage.setItem('@shopCart/items', JSON.stringify(items));
 
             props.updateShopCartItems(items) 
@@ -75,7 +74,7 @@ const ShopCart = (props) => {
         }).catch(
             error => {
                 console.log(error.response.status)
-                if (error.response.status === 400) {
+                if (error.response && error.response.status === 400) {
                     window.confirm("Esse item não está mais disponível em estoque.")
                 }
             })
@@ -157,8 +156,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    addItem: (id) => dispatch({ type: 'ON_ADD_ITEM', id: id}),
-    removeItem: (id) => dispatch({ type: 'ON_ITEM_ITEM', id: id}),
     updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
     updateShopCartItems: (shopCartItems) => dispatch({ type: 'ON_UPDATE_SHOP_CART_ITEMS', shopCartItems: shopCartItems}),
 });
