@@ -55,9 +55,7 @@ class ProductsViewSet(ModelViewSet):
         kwargs['partial'] = True
         product = Products.objects.get(pk=pk)
         logger = logging.getLogger(__name__)
-        #request.data._mutable = True
-        #stock_quantity = int(request.data['stock_quantity']) + product.stock_quantity
-        teste = dict(request.data.lists())
-        logger.error(json.loads(teste).stock_quantity+1)
-        #request.data.update({'stock_quantity': stock_quantity})
+        logger.error(product.stock_quantity)
+        request._full_data = {'stock_quantity': (product.stock_quantity + int(request.data.get('stock_quantity')))}
+        logger.error(request._full_data)
         return self.update(request, *args, **kwargs)

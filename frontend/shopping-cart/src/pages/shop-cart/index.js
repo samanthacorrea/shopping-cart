@@ -28,21 +28,26 @@ const ShopCart = (props) => {
     const addItem = (id) => {
         requester.decrementStock(id).then(result => {
 
+            
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+            console.log("items no carrinho", items[id].count)
+            console.log("items em stock", result.data.stock_quantity)
 
-            items[id].count += 1
-            localStorage.setItem('@shopCart/items', JSON.stringify(items));
+            if (result.data.stock_quantity > 0) {
 
-            props.updateShopCartItems(items) 
-
-            total = Number(total) + Number(items[id].price)
-            localStorage.setItem('@shopCart/price', total);
-            props.updateTotalPurchaseAmount(total)
+                console.log('entrou')
+                items[id].count += 1
+                localStorage.setItem('@shopCart/items', JSON.stringify(items));
+                props.updateShopCartItems(items) 
+    
+                total = Number(total) + Number(items[id].price)
+                localStorage.setItem('@shopCart/price', total);
+                props.updateTotalPurchaseAmount(total)
+            }
 
         }).catch(
             error => {
-                console.log(error.response.status)
                 if (error.response && error.response.status === 400) {
                     window.confirm("Esse item não está mais disponível em estoque.")
                 }
@@ -55,19 +60,20 @@ const ShopCart = (props) => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
-            
-            items[id].count -= 1
-            localStorage.setItem('@shopCart/items', JSON.stringify(items));
+            console.log(result.data.stock_quantity)
+            if (result.data.stock_quantity > 1 && items[id].count > 0) {
+                items[id].count -= 1
+                localStorage.setItem('@shopCart/items', JSON.stringify(items));
 
-            props.updateShopCartItems(items) 
+                props.updateShopCartItems(items) 
 
-            total = Number(total) - Number(items[id].price)
-            localStorage.setItem('@shopCart/price', total);
-            props.updateTotalPurchaseAmount(total)
+                total = Number(total) - Number(items[id].price)
+                localStorage.setItem('@shopCart/price', total);
+                props.updateTotalPurchaseAmount(total)
+            }
 
         }).catch(
             error => {
-                console.log(error.response.status)
                 if (error.response && error.response.status === 400) {
                     window.confirm("Esse item não está mais disponível em estoque.")
                 }

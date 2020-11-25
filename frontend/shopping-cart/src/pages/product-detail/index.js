@@ -19,6 +19,7 @@ const Product = (props) => {
     const saveProduct = (product) => {
         requester.decrementStock(product.id).then(result => {
             let product = result.data
+            console.log(result.data)
             setProduct(product)
             
             let item = {
