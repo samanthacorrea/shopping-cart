@@ -28,10 +28,10 @@ const Products = (props) => {
                     <img src={product.image || asset.NO_IMAGE} alt={product.name} width="150" height="200"/>
                     </div>
                     <div className="col-9 border-bottom">
-                    <div><strong>{product.name}</strong></div>
-                    <div>por {product.author}</div>
+                    <div className="h5"><strong>{product.name}</strong></div>
+                    <div className="mt-n2">por <i>{product.author}</i></div>
                     <div className="h4">R$ {currency(product.price)}</div>
-                    <div style={{'marginTop': '80px'}}>
+                    <div style={{'marginTop': '70px'}}>
                         <Link to={"/products/" + product.id}>
                             <Button variant="contained">Mais detalhes</Button>
                         </Link> 

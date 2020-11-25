@@ -18,7 +18,7 @@ const Product = (props) => {
     }
 
     const saveProduct = (product) => {
-        helper.decrement(product.id).then(result => {
+        helper.decrementStock(product.id).then(result => {
             let product = result.data
             setProduct(product)
             let dictionary = {}
@@ -93,7 +93,7 @@ const Product = (props) => {
                 
                 <div className="col-7">
                     <div className="h5"><strong>{product.name}</strong></div>
-                    <div className="mt-n1">por {product.author}</div>
+                    <div className="mt-n1">por <i>{product.author}</i></div>
                     
 
                     <div className="mt-3">{product.description}</div>

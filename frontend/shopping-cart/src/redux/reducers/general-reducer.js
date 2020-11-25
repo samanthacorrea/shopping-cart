@@ -8,6 +8,7 @@ const initialState = {
     currentProduct: null,
     total: 0,
     totalPurchaseAmount: JSON.parse(localStorage.getItem('@shopCart/price')),
+    shopCartItems: JSON.parse(localStorage.getItem('@shopCart/items')),
     stockQuantityById: null,
 };
 
@@ -143,8 +144,9 @@ export const GeneralReducer = (state = initialState, action) => {
             console.log(action.hasStock)
             return { ...state, hasStock: action.hasStock}
         case 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT':
-            console.log(action)
             return { ...state, totalPurchaseAmount: action.totalPurchaseAmount}
+        case 'ON_UPDATE_SHOP_CART_ITEMS':
+            return { ...state, shopCartItems: action.shopCartItems}
         default:
             return { ...state }
     }

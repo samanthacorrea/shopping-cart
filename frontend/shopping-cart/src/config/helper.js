@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const REACT_APP_DNS = "http://127.0.0.1:8000";
 
-const decrement = (id) => {
+const decrementStock = (id) => {
     let url = REACT_APP_DNS + `/products/${id}/decrement/`;
     return axios.patch(url)
 }
@@ -20,7 +20,7 @@ const getProduct = (id) => {
 
 
 export default {
-    decrement,
+    decrementStock,
     getProducts,
     getProduct,
 };

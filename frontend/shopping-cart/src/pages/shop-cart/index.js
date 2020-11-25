@@ -34,18 +34,20 @@ const ShopCart = (props) => {
     const saveProduct = (id) => {
         console.log(id)
         
-        helper.decrement(id).then(result => {
+        helper.decrementStock(id).then(result => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
             console.log(items[id])
-        
             
             items[id].count += 1
             console.log(items[id].count)
             localStorage.setItem('@shopCart/items', JSON.stringify(items));
 
+            props.updateShopCartItems(items) 
+            console.log(props.shopCartItems[id].count)
+            
 
             total = Number(total) + Number(items[id].price)
             localStorage.setItem('@shopCart/price', total);
@@ -69,7 +71,7 @@ const ShopCart = (props) => {
                     items?
                     <div className="row">
                         <div className="col-12 mr-3 p-4">
-                            <div className="h3">Carrinho de Compras</div>
+                            <div className="mt-n5 mb-5 h3">Carrinho de Compras</div>
 
                             <div>
                                 {itemsList&&itemsList.map((item, index) => (
@@ -78,11 +80,13 @@ const ShopCart = (props) => {
                                             <img src={itemsList[index].image || asset.NO_IMAGE} alt={itemsList[index].name} width="120" height="160"/>
                                         </div>
                                         <div className="col-7 ml-n5 ">
-                                            <div className="h5">{itemsList[index].name}</div>
-                                            <div className="mt-n2">por {itemsList[index].author}</div>
+                                            <div className="h5"><strong>{itemsList[index].name}</strong></div>
+                                            <div className="mt-n2">por <i>{itemsList[index].author}</i></div>
+                                            <div className="mt-">R$ {currency(itemsList[index].price)}</div>
+
                                             <div className="mt-4">
                                                 <span>Qtd.:</span>
-
+                                                
                                                 <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => props.removeItem(itemsList[index].id)}/>
                                                 <span className="ml-3 mr-3">{itemsList[index].count}</span>
                                                 <AddIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => saveProduct(itemsList[index].id)}/>
@@ -94,8 +98,8 @@ const ShopCart = (props) => {
                                             </div>
 
                                         </div>
-                                        <div className="col-3 hborder-bottom h4 text-right">
-                                            <strong>R$ {itemsList[index].price}</strong>
+                                        <div className="col-3 ml-5 hborder-bottom h4 text-right">
+                                            <strong>R$ {currency(itemsList[index].price*itemsList[index].count)}</strong>
                                         </div>
 
                                         
@@ -130,10 +134,7 @@ const ShopCart = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    stockQuantity: state.general.stockQuantityById,
-    hasStock: state.general.hasStock,
-
-    
+    shopCartItems: state.general.shopCartItems,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -141,6 +142,9 @@ const mapDispatchToProps = (dispatch) => ({
     addItem: (id) => dispatch({ type: 'ON_ADD_ITEM', id: id}),
     removeItem: (id) => dispatch({ type: 'ON_ITEM_ITEM', id: id}),
     updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
+    updateShopCartItems: (shopCartItems) => dispatch({ type: 'ON_UPDATE_SHOP_CART_ITEMS', shopCartItems: shopCartItems}),
 });
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopCart)
