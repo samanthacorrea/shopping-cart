@@ -5,7 +5,11 @@ from rest_framework.viewsets import ModelViewSet
 from products.models import Products
 from .serializers import ProductsSerializer
 import logging
-from rest_framework import status
+
+
+from rest_framework.parsers import JSONParser
+
+
 
 
 
@@ -44,4 +48,16 @@ class ProductsViewSet(ModelViewSet):
         product = Products.objects.get(pk=pk)
         product.stock_quantity += 1
         request.data.update({'stock_quantity': product.stock_quantity})
+        return self.update(request, *args, **kwargs)
+
+    @action(methods=["patch"], detail=True)
+    def update_stock(self, request, pk=None, *args, **kwargs):
+        kwargs['partial'] = True
+        product = Products.objects.get(pk=pk)
+        logger = logging.getLogger(__name__)
+        #request.data._mutable = True
+        #stock_quantity = int(request.data['stock_quantity']) + product.stock_quantity
+        teste = dict(request.data.lists())
+        logger.error(json.loads(teste).stock_quantity+1)
+        #request.data.update({'stock_quantity': stock_quantity})
         return self.update(request, *args, **kwargs)

@@ -74,6 +74,15 @@ const ShopCart = (props) => {
             })
     }
 
+    const giveBachAllItemsToStock = (id, shopItemsQuantity) => {
+        requester.giveBachAllItemsToStock(id, shopItemsQuantity).then(result => {
+            console.log(result.data)
+        }).catch(
+            error => {
+                console.log(error.response.status)
+            })
+    }
+
 	return (
 		<div className="container mt-5">
             
@@ -103,7 +112,7 @@ const ShopCart = (props) => {
                            
                                                 <span className="ml-4 mr-3">|</span>
 
-                                                <DeleteIcon className="mt-n1" style={{cursor: 'pointer'}}/>
+                                                <DeleteIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => giveBachAllItemsToStock(itemsList[index].id, itemsList[index].count)}/>
                                                 
                                             </div>
 
@@ -121,9 +130,11 @@ const ShopCart = (props) => {
                             <div className="h4">Total do pedido:</div>
                             <div className="h4"><strong>R$ {helper.currency(total)}</strong></div>
                             <div>
-                                <Button variant="contained" size="large" disableElevation>
-                                    <strong>Fechar Pedido</strong>
-                                </Button>
+                                <Link to="/shop-cart/checkout">
+                                    <Button variant="contained" size="large" disableElevation>
+                                        <strong>Fechar Pedido</strong>
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>

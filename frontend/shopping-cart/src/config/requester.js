@@ -12,6 +12,14 @@ const incrementStock = (id) => {
     return axios.patch(url)
 }
 
+const giveBachAllItemsToStock = (id, shopItemsQuantity) => {
+    let url = REACT_APP_DNS + `/products/${id}/update_stock/`;
+    let params = {
+        "stock_quantity": shopItemsQuantity
+    }
+    return axios.patch(url, params)
+}
+
 const getProducts = () => {
     let url = REACT_APP_DNS + '/products/';
     return axios.get(url)
@@ -27,6 +35,7 @@ const requesters =  {
     incrementStock,
     getProducts,
     getProduct,
+    giveBachAllItemsToStock,
 };
 
 export default requesters
