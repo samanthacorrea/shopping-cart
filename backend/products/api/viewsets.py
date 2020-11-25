@@ -26,13 +26,6 @@ class ProductsViewSet(ModelViewSet):
         logger.error(request.data)
         return self.update(request, *args, **kwargs)
 
-    @action(methods=["get"], detail=True)
-    def stock(self, request, pk=None):
-        products = Products.objects.get(pk=pk)
-        logger = logging.getLogger(__name__)
-        logger.error(products.stock_quantity)
-        return Response({'stock_quantity': products.stock_quantity})
-
     @action(methods=["patch"], detail=True)
     def decrement(self, request, pk=None, *args, **kwargs):
         kwargs['partial'] = True

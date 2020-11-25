@@ -26,8 +26,6 @@ const ShopCart = (props) => {
 
 
     const addItem = (id) => {
-        console.log(id)
-        
         requester.decrementStock(id).then(result => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
@@ -48,15 +46,11 @@ const ShopCart = (props) => {
                 if (error.response && error.response.status === 400) {
                     window.confirm("Esse item não está mais disponível em estoque.")
                 }
-            })
-        
-                    
+            })               
     }
 
 
     const removeItem = (id) => {
-        console.log(id)
-        
         requester.incrementStock(id).then(result => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
@@ -78,8 +72,6 @@ const ShopCart = (props) => {
                     window.confirm("Esse item não está mais disponível em estoque.")
                 }
             })
-        
-                    
     }
 
 	return (
