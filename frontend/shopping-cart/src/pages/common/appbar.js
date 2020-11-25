@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -27,7 +27,17 @@ const useStyles = makeStyles((theme) => ({
 const SearchAppBar = (props) => {
   const classes = useStyles();
 
+  
+
   let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+  let price = JSON.parse(localStorage.getItem('@shopCart/price'))
+  console.log(props.totalPurchaseAmount)
+  console.log(price)
+
+  useEffect(() => {
+    props.updateTotalPurchaseAmount(price)
+    props.updateTotalPurchaseAmount(price)
+    },[props.totalPurchaseAmount], );
 
   const itemsQuantity = () => {
     let itemsTotal = 0;
@@ -66,5 +76,12 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default connect(mapStateToProps)(SearchAppBar)
+const mapDispatchToProps = (dispatch) => ({
+  updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
+
+});
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchAppBar)
 

@@ -6,7 +6,6 @@ import requester from '../../config/requester'
 import helper from '../../config/helper'
 
 const Checkout = (props) => {  
-    
 
     return (
         <div className="container">

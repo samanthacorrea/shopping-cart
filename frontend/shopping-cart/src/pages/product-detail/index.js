@@ -6,7 +6,9 @@ import requester from '../../config/requester'
 import helper from '../../config/helper'
 
 const Product = (props) => {    
+
     const [product, setProduct] = useState();
+
   
     useEffect(() => {
       requester.getProduct(props.match.params.id).then( result => {
@@ -37,6 +39,8 @@ const Product = (props) => {
                 dictionary[product.id] = item
                 localStorage.setItem('@shopCart/items', JSON.stringify(dictionary));
                 localStorage.setItem('@shopCart/price', product.price);
+
+                props.updateShopCartItems(dictionary)
                 props.updateTotalPurchaseAmount(product.price)
                 
             } else {
@@ -46,6 +50,7 @@ const Product = (props) => {
                     localStorage.setItem('@shopCart/items', JSON.stringify(items));
                     total = Number(total) + Number(product.price)
                     localStorage.setItem('@shopCart/price', total);
+                    props.updateShopCartItems(items)
                     props.updateTotalPurchaseAmount(total)
                     
                 } else {
@@ -54,6 +59,7 @@ const Product = (props) => {
                     localStorage.setItem('@shopCart/items', JSON.stringify(items));
                     total = Number(total) + Number(product.price)
                     localStorage.setItem('@shopCart/price', total);
+                    props.updateShopCartItems(items)
                     props.updateTotalPurchaseAmount(total)
                 } 
             }
@@ -103,8 +109,12 @@ const Product = (props) => {
     )
 }
 
+const mapStateToProps = (state) => ({
+});
+
 const mapDispatchToProps = (dispatch) => ({
+    updateShopCartItems: (shopCartItems) => dispatch({ type: 'ON_UPDATE_SHOP_CART_ITEMS', shopCartItems: shopCartItems}),
     updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
 });
 
-export default connect(mapDispatchToProps)(Product)
+export default connect(mapStateToProps, mapDispatchToProps)(Product)
