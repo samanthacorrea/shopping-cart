@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom'
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import requester from '../../config/requester'
-
-
+import helper from '../../config/helper'
 
 const ShopCart = (props) => {
 
@@ -25,10 +24,7 @@ const ShopCart = (props) => {
 
     let itemsList = itemsFormatter()
 
-    const currency = (value) => {
-        return parseFloat(value).toLocaleString('pt-br', {minimumFractionDigits: 2})
-    }
-    
+
     const addItem = (id) => {
         console.log(id)
         
@@ -105,7 +101,7 @@ const ShopCart = (props) => {
                                         <div className="col-7 ml-n5 ">
                                             <div className="h5"><strong>{itemsList[index].name}</strong></div>
                                             <div className="mt-n2">por <i>{itemsList[index].author}</i></div>
-                                            <div className="mt-">R$ {currency(itemsList[index].price)}</div>
+                                            <div className="mt-">R$ {helper.currency(itemsList[index].price)}</div>
 
                                             <div className="mt-4">
                                                 <span>Qtd.:</span>
@@ -122,7 +118,7 @@ const ShopCart = (props) => {
 
                                         </div>
                                         <div className="col-3 ml-5 hborder-bottom h4 text-right">
-                                            <strong>R$ {currency(itemsList[index].price*itemsList[index].count)}</strong>
+                                            <strong>R$ {helper.currency(itemsList[index].price*itemsList[index].count)}</strong>
                                         </div>
 
                                         
@@ -132,7 +128,7 @@ const ShopCart = (props) => {
                         </div>
                         <div className="col-12 p-4 text-right">
                             <div className="h4">Total do pedido:</div>
-                            <div className="h4"><strong>R$ {currency(total)}</strong></div>
+                            <div className="h4"><strong>R$ {helper.currency(total)}</strong></div>
                             <div>
                                 <Button variant="contained" size="large" disableElevation>
                                     <strong>Fechar Pedido</strong>

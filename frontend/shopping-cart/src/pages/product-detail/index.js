@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import asset from '../../assets'
 import Button from '@material-ui/core/Button';
 import requester from '../../config/requester'
+import helper from '../../config/helper'
 
 const Product = (props) => {    
     const [product, setProduct] = useState();
@@ -12,10 +13,6 @@ const Product = (props) => {
           setProduct(result.data)
       }).catch(error => console.log(error))
     },[props.match.params.id]);
-
-    const currency = (value) => {
-        return parseFloat(value).toLocaleString('pt-br', {minimumFractionDigits: 2})
-    }
 
     const saveProduct = (product) => {
         requester.decrementStock(product.id).then(result => {
@@ -101,7 +98,7 @@ const Product = (props) => {
                 </div>
 
                 <div className="col-2 text-right">
-                    <div className="h4">R$ {currency(product.price)}</div>
+                    <div className="h4">R$ {helper.currency(product.price)}</div>
                     <div className="mt-n2 mb-3">{product.stock_quantity>0?'Em estoque':'Produto indisponível'}</div>
                     <div className="mt-n2 mb-3">{product.stock_quantity}</div>
                     <div>

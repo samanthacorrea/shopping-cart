@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Badge from '@material-ui/core/Badge';
 import { Link } from 'react-router-dom'
 import asset from '../../assets'
+import helper from '../../config/helper'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,10 +28,6 @@ const SearchAppBar = (props) => {
   const classes = useStyles();
 
   let items = JSON.parse(localStorage.getItem('@shopCart/items'))
-
-  const currency = (value) => {
-    return parseFloat(value).toLocaleString('pt-br', {minimumFractionDigits: 2})
-  }
 
   const itemsQuantity = () => {
     let itemsTotal = 0;
@@ -54,7 +51,7 @@ const SearchAppBar = (props) => {
               <strong>MASSAM'S SHOP</strong>
             </Link>
           </Typography>
-          <span className="mr-3 h5">R$ {props.totalPurchaseAmount?currency(props.totalPurchaseAmount):'0,00'}</span>
+          <span className="mr-3 h5">R$ {props.totalPurchaseAmount?helper.currency(props.totalPurchaseAmount):'0,00'}</span>
           <Link to="/shop-cart" style={{ color: 'inherit', textDecoration: 'inherit'}}>
             <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
               <ShoppingCartRoundedIcon fontSize="large"/>
