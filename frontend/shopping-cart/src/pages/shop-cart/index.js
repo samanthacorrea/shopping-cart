@@ -80,13 +80,29 @@ const ShopCart = (props) => {
             })
     }
 
-    const giveBachAllItemsToStock = (id, shopItemsQuantity) => {
-        requester.giveBachAllItemsToStock(id, shopItemsQuantity).then(result => {
-            console.log(result.data)
-        }).catch(
-            error => {
-                console.log(error.response.status)
-            })
+    const giveBackAllItemsToStock = (id, shopItemsQuantity) => {
+        if (window.confirm('Deseja realmente remover esse item do seu carrinho?')) {
+            requester.giveBackAllItemsToStock(id, shopItemsQuantity).then(result => {
+                console.log(result.data)
+                console.log(shopItemsQuantity)
+                let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+                let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+
+                delete items[id]
+                total -= (result.data.price * shopItemsQuantity)
+                localStorage.setItem('@shopCart/items', JSON.stringify(items));
+                localStorage.setItem('@shopCart/price', total);
+
+                console.log(items)
+                console.log(total)
+                props.updateTotalPurchaseAmount(total)
+                props.updateShopCartItems(items) 
+                
+            }).catch(
+                error => {
+                    console.log(error)
+                })    
+        }
     }
 
 	return (
@@ -118,7 +134,7 @@ const ShopCart = (props) => {
                            
                                                 <span className="ml-4 mr-3">|</span>
 
-                                                <DeleteIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => giveBachAllItemsToStock(itemsList[index].id, itemsList[index].count)}/>
+                                                <DeleteIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => giveBackAllItemsToStock(itemsList[index].id, itemsList[index].count)}/>
                                                 
                                             </div>
 

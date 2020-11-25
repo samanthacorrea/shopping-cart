@@ -24,6 +24,7 @@ const Products = (props) => {
                     <div className="col-9 border-bottom">
                     <div className="h5"><strong>{product.name}</strong></div>
                     <div className="mt-n2">por <i>{product.author}</i></div>
+                    <div className="mt-n2"><i>{product.stock_quantity}</i></div>
                     <div className="h4">R$ {helper.currency(product.price)}</div>
                     <div style={{'marginTop': '70px'}}>
                         <Link to={"/products/" + product.id}>

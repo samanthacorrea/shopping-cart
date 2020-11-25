@@ -35,7 +35,7 @@ const Product = (props) => {
             let dictionary = {}
 
             if (!items && !dictionary[product.id]) {
-                console.log('não existe, add tudo')
+                //console.log('não existe, add tudo')
                 item.count = 1
                 dictionary[product.id] = item
                 localStorage.setItem('@shopCart/items', JSON.stringify(dictionary));
@@ -45,7 +45,7 @@ const Product = (props) => {
                 props.updateTotalPurchaseAmount(product.price)
                 
             } else {
-                console.log(items[product.id])
+                //console.log(items[product.id])
                 if (items[product.id]) {
                     items[product.id].count += 1
                     localStorage.setItem('@shopCart/items', JSON.stringify(items));
