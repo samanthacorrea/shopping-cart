@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
-import asset from '../assets'
 import helper from '../config/helper'
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
 
 function getModalStyle() {
   const top = 50
@@ -28,8 +32,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const PaymentModal = (props) => {
     let itemsList = props.itemsFormatter()
+
+    const [creditCard, setCreditCard] = useState('disapproved');
+
+    const setRadioState = (event) => {
+        console.log(event)
+        console.log(event.target)
+        console.log(event.target.value)
+        setCreditCard(event.target.value);
+    };
+  
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -56,9 +72,38 @@ const PaymentModal = (props) => {
                     </div>
                 ))}
             </div>
-            <div>
+            <div className="row mt-2">
+                <div className="col-2 text-uppercase">
+                    
+                </div>
+                <div className="col-7 text-right">
+                    <strong>Total do pedido</strong>
+                </div>
+                <div className="col-3">
+                    <strong>R$ {helper.currency(props.total)}</strong>
+                </div>
+            </div>
+            <div className="mt-4">
                 <div><strong>Endereço de entrega:</strong></div>
                 <div>Rua Francy Assis Nº2229, Chapada - Manaus, Am - 69050-750</div>
+            </div>
+
+            <div className="mt-4">
+                <strong>Foma de pagamento:</strong>
+            </div>
+            <div >
+                <FormControl component="fieldset">
+                    <RadioGroup aria-label="creditCard" name="creditCard" value={creditCard ? creditCard : " "} onChange={setRadioState}>
+                        <FormControlLabel value="disapproved" control={<Radio color="primary"/>} label="**** **** **** 8520 (07/2019)" />
+                        <FormControlLabel className="mt-n3" value="approved" control={<Radio color="primary"/>} label="**** **** **** 7765 (09/2022)" />
+                    </RadioGroup>
+                </FormControl>
+            </div>
+
+            <div className="text-center">
+                <Button variant="contained" size="large" color="primary">
+                    <strong>Confirmar Pedido</strong>
+                </Button>
             </div>
 
         </div>
