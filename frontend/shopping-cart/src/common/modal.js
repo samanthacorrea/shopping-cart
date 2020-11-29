@@ -65,7 +65,7 @@ const PaymentModal = (props) => {
                     <div className="col-3"><strong>preço (un)</strong></div>
                 </div>
                 {itemsList&&itemsList.map((item, index) => (    
-                    <div className="row border-bottom pt-2 pb-2">
+                    <div className="row border-bottom pt-2 pb-2" key={index}>
                         <div className="col-2">{item.count}</div>
                         <div className="col-7">{item.name}</div>
                         <div className="col-3">R$ {helper.currency(item.price)}</div>

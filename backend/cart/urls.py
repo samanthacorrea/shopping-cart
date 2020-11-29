@@ -18,12 +18,12 @@ from django.urls import path, include
 from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static
-from core.api.viewsets import ProductsViewSet
 from products.api.viewsets import ProductsViewSet
+from orders.api.viewsets import OrdersViewSet
 router = routers.DefaultRouter()
 
-#router.register(r'products', ProductsViewSet)
 router.register(r'products', ProductsViewSet)
+router.register(r'orders', OrdersViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

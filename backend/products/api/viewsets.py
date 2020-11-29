@@ -7,12 +7,6 @@ from .serializers import ProductsSerializer
 import logging
 
 
-from rest_framework.parsers import JSONParser
-
-
-
-
-
 class ProductsViewSet(ModelViewSet):
     """
     A simple ViewSet for viewing and editing accounts.
@@ -47,7 +41,7 @@ class ProductsViewSet(ModelViewSet):
         kwargs['partial'] = True
         product = Products.objects.get(pk=pk)
         request._full_data = {'stock_quantity': (product.stock_quantity + int(request.data.get('stock_quantity')))}
-        if(product.stock_quantity+1) < int(request.data.get('stock_quantity')):
+        if (product.stock_quantity + 1) < int(request.data.get('stock_quantity')):
             product.stock_quantity += 1
             request.data.update({'stock_quantity': product.stock_quantity})
             return self.update(request, *args, **kwargs)
