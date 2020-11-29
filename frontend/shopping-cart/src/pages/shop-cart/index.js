@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import asset from '../../assets'
@@ -8,11 +8,18 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import requester from '../../config/requester'
 import helper from '../../config/helper'
+import PaymentModal from '../../common/modal'
 
 const ShopCart = (props) => {
 
     let items = JSON.parse(localStorage.getItem('@shopCart/items'))
     let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+
+    const [open, setOpen] = useState(false);
+
+    const setModalState = (status) => {
+      setOpen(status);
+    };
 
     const itemsFormatter = () => {
         let itemsList = []
@@ -82,6 +89,12 @@ const ShopCart = (props) => {
             })
     }
 
+    const isEmptyObject = (obj) => {
+        var name;
+        for (name in obj) return false;
+        return true;
+    }
+
     const giveBackAllItemsToStock = (id, shopItemsQuantity) => {
         if (window.confirm('Deseja realmente remover esse item do seu carrinho?')) {
             requester.giveBackAllItemsToStock(id, shopItemsQuantity).then(result => {
@@ -91,11 +104,17 @@ const ShopCart = (props) => {
                 let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
                 delete items[id]
+            
                 total -= (result.data.price * shopItemsQuantity)
+                if (total > 0) localStorage.setItem('@shopCart/price', total);
+                else {
+                    total = 0
+                    localStorage.setItem('@shopCart/price', total);
+                }
                 localStorage.setItem('@shopCart/items', JSON.stringify(items));
-                localStorage.setItem('@shopCart/price', total);
+                
 
-                console.log(items)
+                console.log(items.length)
                 console.log(total)
                 props.updateTotalPurchaseAmount(total)
                 props.updateShopCartItems(items) 
@@ -111,7 +130,7 @@ const ShopCart = (props) => {
 		<div className="container mt-5">
             
                 {
-                    items?
+                    items&&!isEmptyObject(items)?
                     <div className="row">
                         <div className="col-12 mr-3 p-4">
                             <div className="mt-n5 mb-5 h3">Carrinho de Compras</div>
@@ -120,29 +139,29 @@ const ShopCart = (props) => {
                                 {itemsList&&itemsList.map((item, index) => (
                                     <div className="row mt-4 border-bottom" key={index}>
                                         <div className="col-2">
-                                            <img src={itemsList[index].image || asset.NO_IMAGE} alt={itemsList[index].name} width="120" height="160"/>
+                                            <img src={item.image || asset.NO_IMAGE} alt={item.name} width="120" height="160"/>
                                         </div>
                                         <div className="col-7 ml-n5 ">
-                                            <div className="h5"><strong>{itemsList[index].name}</strong></div>
-                                            <div className="mt-n2">por <i>{itemsList[index].author}</i></div>
-                                            <div className="mt-">R$ {helper.currency(itemsList[index].price)}</div>
+                                            <div className="h5"><strong>{item.name}</strong></div>
+                                            <div className="mt-n2">por <i>{item.author}</i></div>
+                                            <div className="mt-">R$ {helper.currency(item.price)}</div>
 
                                             <div className="mt-4">
                                                 <span>Qtd.:</span>
                                                 
-                                                <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => removeItem(itemsList[index].id, itemsList[index].count)}/>
-                                                <span className="ml-3 mr-3">{itemsList[index].count}</span>
-                                                <AddIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => addItem(itemsList[index].id)}/>
+                                                <RemoveIcon className="mt-n1 ml-3" style={{cursor: 'pointer'}} onClick={() => removeItem(item.id, item.count)}/>
+                                                <span className="ml-3 mr-3">{item.count}</span>
+                                                <AddIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => addItem(item.id)}/>
                            
                                                 <span className="ml-4 mr-3">|</span>
 
-                                                <DeleteIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => giveBackAllItemsToStock(itemsList[index].id, itemsList[index].count)}/>
+                                                <DeleteIcon className="mt-n1" style={{cursor: 'pointer'}} onClick={() => giveBackAllItemsToStock(item.id, item.count)}/>
                                                 
                                             </div>
 
                                         </div>
                                         <div className="col-3 ml-5 hborder-bottom h4 text-right">
-                                            <strong>R$ {helper.currency(itemsList[index].price*itemsList[index].count)}</strong>
+                                            <strong>R$ {helper.currency(item.price*item.count)}</strong>
                                         </div>
 
                                         
@@ -153,12 +172,10 @@ const ShopCart = (props) => {
                         <div className="col-12 p-4 text-right">
                             <div className="h4">Total do pedido:</div>
                             <div className="h4"><strong>R$ {helper.currency(total)}</strong></div>
-                            <div>
-                                <Link to="/shop-cart/checkout">
-                                    <Button variant="contained" size="large" disableElevation>
-                                        <strong>Fechar Pedido</strong>
-                                    </Button>
-                                </Link>
+                            <div>                                
+                                <Button variant="contained" size="large" disableElevation onClick={() => setModalState(true)}>
+                                    <strong>Fechar Pedido</strong>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -173,7 +190,13 @@ const ShopCart = (props) => {
                     </div>
                 }
                 
-            
+                <PaymentModal 
+                    setModalState={setModalState} 
+                    open={open} 
+                    items={JSON.parse(localStorage.getItem('@shopCart/items'))}
+                    total={JSON.parse(localStorage.getItem('@shopCart/price'))}
+                    itemsFormatter={itemsFormatter}/>
+                
         </div>
 	);
 }

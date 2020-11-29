@@ -7,8 +7,8 @@ import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import { connect } from 'react-redux';
 import Badge from '@material-ui/core/Badge';
 import { Link } from 'react-router-dom'
-import asset from '../../assets'
-import helper from '../../config/helper'
+import asset from '../assets'
+import helper from '../config/helper'
 
 
 const useStyles = makeStyles((theme) => ({

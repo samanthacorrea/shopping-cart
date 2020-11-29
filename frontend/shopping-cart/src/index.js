@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { Provider } from "react-redux"
 import { Store } from './redux/store'
-import AppBar from './pages/common/appbar'
+import AppBar from './common/appbar'
 
 ReactDOM.render(
     <Router>
