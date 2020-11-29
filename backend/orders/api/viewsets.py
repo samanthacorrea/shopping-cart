@@ -14,3 +14,13 @@ class OrdersViewSet(ModelViewSet):
     queryset = Orders.objects.all()
     serializer_class = OrdersSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        logger = logging.getLogger(__name__)
+        logger.error(request.data)
+        if int(request.data.get('cardId')) == 1:
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response({'message': 'Compra não realizada! Verifique se os dados do seu cartão são válidos.'}, status=status.HTTP_403_FORBIDDEN)

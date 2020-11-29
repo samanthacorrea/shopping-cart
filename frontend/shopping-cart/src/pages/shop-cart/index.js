@@ -18,18 +18,10 @@ const ShopCart = (props) => {
     const [open, setOpen] = useState(false);
 
     const setModalState = (status) => {
-      setOpen(status);
+        setOpen(status);
     };
 
-    const itemsFormatter = () => {
-        let itemsList = []
-        for (let index in items) {
-            itemsList.push(items[index])
-        }
-        return itemsList;
-    }
-
-    let itemsList = itemsFormatter()
+    let itemsList = helper.itemsFormatter(items)
 
 
     const addItem = (id) => {
@@ -195,7 +187,7 @@ const ShopCart = (props) => {
                     open={open} 
                     items={JSON.parse(localStorage.getItem('@shopCart/items'))}
                     total={JSON.parse(localStorage.getItem('@shopCart/price'))}
-                    itemsFormatter={itemsFormatter}/>
+                    itemsFormatter={helper.itemsFormatter}/>
                 
         </div>
 	);

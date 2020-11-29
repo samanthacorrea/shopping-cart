@@ -33,12 +33,20 @@ const getProduct = (id) => {
     return axios.get(url)
 };
 
+const checkout = (order) => {
+    let url = REACT_APP_DNS + '/orders/';
+
+    console.log(order)
+    return axios.post(url, order)
+}
+
 const requesters =  {
     decrementStock,
     incrementStock,
     getProducts,
     getProduct,
     giveBackAllItemsToStock,
+    checkout
 };
 
 export default requesters

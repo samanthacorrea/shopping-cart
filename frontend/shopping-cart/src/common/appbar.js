@@ -27,26 +27,15 @@ const useStyles = makeStyles((theme) => ({
 const SearchAppBar = (props) => {
   const classes = useStyles();
 
-  
-
   let items = JSON.parse(localStorage.getItem('@shopCart/items')) || null
   let price = JSON.parse(localStorage.getItem('@shopCart/price')) || null
   
-
   useEffect(() => {
     props.updateTotalPurchaseAmount(price)
     props.updateTotalPurchaseAmount(price)
     },[props.totalPurchaseAmount], );
 
-  const itemsQuantity = () => {
-    let itemsTotal = 0;
-    for (let item in items) {
-      itemsTotal += items[item].count;
-    }
-    return itemsTotal;
-  }
-
-  let itemsTotal = itemsQuantity();
+  let itemsTotal = helper.itemsQuantity(items);
 
   return (
     <div className={classes.root}>
