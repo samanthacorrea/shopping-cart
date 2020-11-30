@@ -65,8 +65,9 @@ const PaymentModal = (props) => {
             setStep(2)
             localStorage.removeItem('@shopCart/items')
             localStorage.removeItem('@shopCart/price')
+            localStorage.removeItem('@shopCart/quantity')
             props.updateTotalPurchaseAmount(0)
-            //let itemsTotal = helper.itemsQuantity(items);
+            props.updateQuantityPurchase(0)
         }).catch(
             error => {
                 console.log(error)
@@ -157,7 +158,15 @@ const PaymentModal = (props) => {
                     </Link>
                 </div>:
             step==3?
-                <div>reprovado</div>:
+                <div className="text-center">
+                    <div className="h3">
+                        Compra não realizada! 
+                        <div className="h5 mt-2 mb-5">Verifique se os dados do seu cartão são válidos.</div>
+                    </div>
+                    <Button variant="contained" size="large" disableElevation onClick={() => setStep(1)}>
+                        <strong>voltar</strong>
+                    </Button>
+                </div>:
                 <div>aconteceu algum problema</div>
         }
     </div>
@@ -183,6 +192,7 @@ const mapStateToProps = (state) => ({
   
 const mapDispatchToProps = (dispatch) => ({
     updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
+    updateQuantityPurchase: (quantityPurchase) => dispatch({ type: 'ON_UPDATE_QUANTITY_PURCHASE', quantityPurchase: quantityPurchase}),
 });
   
   
