@@ -164,7 +164,7 @@ const PaymentModal = (props) => {
                         <div className="h5 mt-2 mb-5">Verifique se os dados do seu cartão são válidos.</div>
                     </div>
                     <Button variant="contained" size="large" disableElevation onClick={() => setStep(1)}>
-                        <strong>voltar</strong>
+                        <strong>tentar novamente</strong>
                     </Button>
                 </div>:
                 <div>aconteceu algum problema</div>

@@ -13,7 +13,6 @@ export const GeneralReducer = (state = initialState, action) => {
         case 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT':
             return { ...state, totalPurchaseAmount: action.totalPurchaseAmount}
         case 'ON_UPDATE_QUANTITY_PURCHASE':
-            console.log(action.quantityPurchase)
         return { ...state, quantityPurchase: action.quantityPurchase}
         case 'ON_UPDATE_SHOP_CART_ITEMS':
             return { ...state, shopCartItems: action.shopCartItems}
