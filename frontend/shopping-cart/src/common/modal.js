@@ -42,9 +42,6 @@ const PaymentModal = (props) => {
     const [step, setStep] = useState(1);
 
     const setRadioState = (event) => {
-        console.log(event)
-        console.log(event.target)
-        console.log(event.target.value)
         setCreditCard(event.target.value);
     };
 
@@ -69,6 +66,7 @@ const PaymentModal = (props) => {
             localStorage.removeItem('@shopCart/items')
             localStorage.removeItem('@shopCart/price')
             props.updateTotalPurchaseAmount(0)
+            //let itemsTotal = helper.itemsQuantity(items);
         }).catch(
             error => {
                 console.log(error)

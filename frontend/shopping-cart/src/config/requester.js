@@ -35,8 +35,6 @@ const getProduct = (id) => {
 
 const checkout = (order) => {
     let url = REACT_APP_DNS + '/orders/';
-
-    console.log(order)
     return axios.post(url, order)
 }
 

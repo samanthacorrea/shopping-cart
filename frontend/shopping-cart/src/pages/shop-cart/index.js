@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import asset from '../../assets'
@@ -12,6 +12,7 @@ import PaymentModal from '../../common/modal'
 
 const ShopCart = (props) => {
 
+    
     let items = JSON.parse(localStorage.getItem('@shopCart/items'))
     let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
@@ -33,6 +34,8 @@ const ShopCart = (props) => {
                 console.log(result.data)
                 let items = JSON.parse(localStorage.getItem('@shopCart/items'))
                 let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+                let quantity = JSON.parse(localStorage.getItem('@shopCart/quantity'))
+                props.updateQuantityPurchase(items)
                 
 
                 console.log('entrou')
@@ -45,6 +48,11 @@ const ShopCart = (props) => {
                 total = Number(total) + Number(items[id].price)
                 localStorage.setItem('@shopCart/price', total);
                 props.updateTotalPurchaseAmount(total)
+
+
+                quantity += 1
+                localStorage.setItem('@shopCart/quantity', quantity);
+                props.updateQuantityPurchase(items)
             } else {
                 alert(product.message)
             }
@@ -61,6 +69,9 @@ const ShopCart = (props) => {
 
             let items = JSON.parse(localStorage.getItem('@shopCart/items'))
             let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+            let quantity = JSON.parse(localStorage.getItem('@shopCart/quantity'))
+            props.updateQuantityPurchase(items)
+            
 
             if(items[id].count > 1) {
                 items[id].count -= 1
@@ -71,6 +82,16 @@ const ShopCart = (props) => {
                 total = Number(total) - Number(items[id].price)
                 localStorage.setItem('@shopCart/price', total);
                 props.updateTotalPurchaseAmount(total)
+                quantity -= 1
+                localStorage.setItem('@shopCart/quantity', quantity);
+                props.updateQuantityPurchase(items)
+
+
+
+                // let itemsQuantity = helper.itemsQuantity(items)
+                // console.log(itemsQuantity)
+                // localStorage.setItem('@shopCart/quantity', itemsQuantity);
+                // props.updateQuantityPurchase(items)
             }
 
         }).catch(
@@ -94,9 +115,11 @@ const ShopCart = (props) => {
                 console.log(shopItemsQuantity)
                 let items = JSON.parse(localStorage.getItem('@shopCart/items'))
                 let total = JSON.parse(localStorage.getItem('@shopCart/price'))
+                let quantity = JSON.parse(localStorage.getItem('@shopCart/quantity'))
 
                 delete items[id]
             
+
                 total -= (result.data.price * shopItemsQuantity)
                 if (total > 0) localStorage.setItem('@shopCart/price', total);
                 else {
@@ -105,11 +128,11 @@ const ShopCart = (props) => {
                 }
                 localStorage.setItem('@shopCart/items', JSON.stringify(items));
                 
-
-                console.log(items.length)
-                console.log(total)
+                quantity -= shopItemsQuantity
+                localStorage.setItem('@shopCart/quantity', quantity)
                 props.updateTotalPurchaseAmount(total)
                 props.updateShopCartItems(items) 
+                props.updateQuantityPurchase(items)
                 
             }).catch(
                 error => {
@@ -199,6 +222,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
+    updateQuantityPurchase: (quantityPurchase) => dispatch({ type: 'ON_UPDATE_QUANTITY_PURCHASE', quantityPurchase: quantityPurchase}),
     updateShopCartItems: (shopCartItems) => dispatch({ type: 'ON_UPDATE_SHOP_CART_ITEMS', shopCartItems: shopCartItems}),
 });
 

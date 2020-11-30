@@ -29,11 +29,12 @@ const SearchAppBar = (props) => {
 
   let items = JSON.parse(localStorage.getItem('@shopCart/items')) || null
   let price = JSON.parse(localStorage.getItem('@shopCart/price')) || null
+  let quantity = JSON.parse(localStorage.getItem('@shopCart/quantity')) || null
   
   useEffect(() => {
     props.updateTotalPurchaseAmount(price)
-    props.updateTotalPurchaseAmount(price)
-    },[props.totalPurchaseAmount], );
+    props.updateQuantityPurchase(quantity)
+    },[props.totalPurchaseAmount, props.quantityPurchase]);
 
   let itemsTotal = helper.itemsQuantity(items);
 
@@ -49,7 +50,7 @@ const SearchAppBar = (props) => {
           </Typography>
           <span className="mr-3 h5">R$ {props.totalPurchaseAmount?helper.currency(props.totalPurchaseAmount):'0,00'}</span>
           <Link to="/shop-cart" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-            <Badge badgeContent={itemsTotal>0?itemsTotal:'0'} color="secondary">
+            <Badge badgeContent={props.quantityPurchase>0?props.quantityPurchase:'0'} color="secondary">
               <ShoppingCartRoundedIcon fontSize="large"/>
             </Badge>
           </Link>
@@ -61,12 +62,13 @@ const SearchAppBar = (props) => {
 
 const mapStateToProps = (state) => ({
   totalPurchaseAmount: state.general.totalPurchaseAmount,
+  quantityPurchase: state.general.quantityPurchase,
 });
 
 
 const mapDispatchToProps = (dispatch) => ({
   updateTotalPurchaseAmount: (totalPurchaseAmount) => dispatch({ type: 'ON_UPDATE_TOTAL_PURCHASE_AMOUNT', totalPurchaseAmount: totalPurchaseAmount}),
-
+  updateQuantityPurchase: (quantityPurchase) => dispatch({ type: 'ON_UPDATE_QUANTITY_PURCHASE', quantityPurchase: quantityPurchase}),
 });
 
 

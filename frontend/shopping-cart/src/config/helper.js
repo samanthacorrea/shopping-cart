@@ -32,21 +32,6 @@ const productsInOrderFormatter = (items) => {
     console.log(itemsList)
     return itemsList;
 }
-// const productsInOrderFormatter = (items) => {
-//     console.log(items)
-//     let itemsList = {}
-//     let product = {}
-
-//     for (let index in items) {
-//         console.log(index)
-//         product.id = index
-//         product.count = items[index].count
-//         itemsList[index] = product
-//     }
-
-//     console.log(itemsList)
-//     return itemsList;
-// }
 
 const helpers = {
     currency,
