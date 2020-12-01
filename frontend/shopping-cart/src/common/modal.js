@@ -158,16 +158,31 @@ const PaymentModal = (props) => {
                     </Link>
                 </div>:
             step==3?
-                <div className="text-center">
+                <div className="text-center mb-5">
                     <div className="h3">
                         Compra não realizada! 
-                        <div className="h5 mt-2 mb-5">Verifique se os dados do seu cartão são válidos.</div>
+                        <div className="h5 mt-2 mb-3">Verifique se os dados do seu cartão são válidos.</div>
+
+                        <div className="mt-2 mb-3">
+                            <img src={asset.FAIL || asset.NO_IMAGE} alt="reprovado" width="100" height="90"/>
+                        </div>
                     </div>
                     <Button variant="contained" size="large" disableElevation onClick={() => setStep(1)}>
                         <strong>tentar novamente</strong>
                     </Button>
                 </div>:
-                <div>aconteceu algum problema</div>
+                <div className="text-center mb-5">
+                    <div className="h3">
+                        Aviso! 
+                        <div className="h5 mt-2">Aconteceu algum problema no servidor e sua compra não foi processada.</div>
+                        <div className="mt-2 mb-3">
+                            <img src={asset.WARNING || asset.NO_IMAGE} alt="aviso" width="100" height="90"/>
+                        </div>
+                    </div>
+                    <Button variant="contained" size="large" disableElevation onClick={() => setStep(1)}>
+                        <strong>tentar novamente</strong>
+                    </Button>
+                </div>
         }
     </div>
   );
