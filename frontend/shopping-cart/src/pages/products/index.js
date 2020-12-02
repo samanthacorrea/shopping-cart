@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import requester from '../../config/requester'
 import helper from '../../config/helper'
+import Product from './product';
 
 const Products = (props) => {  
     const [products, setProducts] = useState();
@@ -17,22 +18,7 @@ const Products = (props) => {
     return (
         <div className="container">
             {products&&products.map((product, index) => (
-                <div className="row mt-4" key={index}>
-                    <div className="col-2">
-                    <img src={product.image || asset.NO_IMAGE} alt={product.name} width="150" height="200"/>
-                    </div>
-                    <div className="col-9 border-bottom">
-                    <div className="h5"><strong>{product.name}</strong></div>
-                    <div className="mt-n2">por <i>{product.author}</i></div>
-                    <div className="mt-n2"><i>{product.stock_quantity}</i></div>
-                    <div className="h4">R$ {helper.currency(product.price)}</div>
-                    <div style={{'marginTop': '70px'}}>
-                        <Link to={"/products/" + product.id}>
-                            <Button variant="contained">Mais detalhes</Button>
-                        </Link> 
-                    </div>
-                    </div>
-                </div> 
+                <Product product={product} index={index}/>
             ))}
               
         </div>
