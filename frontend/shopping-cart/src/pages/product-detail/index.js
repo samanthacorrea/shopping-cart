@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import asset from '../../assets'
-import Button from '@material-ui/core/Button';
 import requester from '../../config/requester'
 import helper from '../../config/helper'
+import ProductDetail from './product-detail'
 
 const Product = (props) => {    
 
@@ -90,33 +89,7 @@ const Product = (props) => {
     return (
         <div className="container">      
             {
-                product?
-
-                <div className="row mt-5">
-                
-                    <div className="col-3">
-                        <img src={product.image || asset.NO_IMAGE} alt={product.name} width="250" height="350"/>
-                    </div>
-                    
-                    <div className="col-7">
-                        <div className="h5"><strong>{product.name}</strong></div>
-                        <div className="mt-n1">por <i>{product.author}</i></div>
-                        <div className="mt-3">{product.description}</div>
-                    </div>
-
-                    <div className="col-2 text-right">
-                        <div className="h4">R$ {helper.currency(product.price)}</div>
-                        <div className="mt-n2 mb-3">{product.stock_quantity>0?'Em estoque':'Produto indisponível'}</div>
-                        <div className="mt-n2 mb-3">{product.stock_quantity}</div>
-                        <div>
-                            <Button variant="contained" color="primary" size="large" disableElevation onClick={() => saveProduct(product)}>
-                                <strong>Comprar</strong>
-                            </Button>
-                        </div>
-                    </div>
-                </div> 
-                :
-                <div>Produto não encontrado!</div>
+                product?<ProductDetail product={product} saveProduct={saveProduct}/>:<div>Produto não encontrado!</div>
             }
             
 

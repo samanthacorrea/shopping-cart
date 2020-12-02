@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom'
-import Product from '../product'
+import ProductDetail from '../product-detail'
 import '@testing-library/jest-dom/extend-expect'
-
 
 const product = {"id":9,
                   "name":"O feminismo é para todo mundo: Políticas arrebatadoras",
@@ -15,13 +14,12 @@ const product = {"id":9,
 
 
 describe("Product working", () => {
-  test("render Product", () => {
+  test("render Product Details", () => {
     const { getByText } = render(
       <Router>
-        <Product product={product}/>
+        <ProductDetail product={product}/>
       </Router>
     )
-    //console.log(screen.getByText("Bell Hooks"))
     expect(getByText("Bell Hooks")).toHaveTextContent("Bell Hooks");
     
   });
