@@ -85,13 +85,6 @@ const ShopCart = (props) => {
                 quantity -= 1
                 localStorage.setItem('@shopCart/quantity', quantity);
                 props.updateQuantityPurchase(items)
-
-
-
-                // let itemsQuantity = helper.itemsQuantity(items)
-                // console.log(itemsQuantity)
-                // localStorage.setItem('@shopCart/quantity', itemsQuantity);
-                // props.updateQuantityPurchase(items)
             }
 
         }).catch(
