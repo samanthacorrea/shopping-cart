@@ -11,6 +11,7 @@ const ShopCart = (props) => {
 
     
     let items = JSON.parse(localStorage.getItem('@shopCart/items'))
+    console.log(localStorage.getItem('@shopCart/items'))
     let total = JSON.parse(localStorage.getItem('@shopCart/price'))
 
     const [open, setOpen] = useState(false);
@@ -20,6 +21,7 @@ const ShopCart = (props) => {
     };
 
     let itemsList = helper.itemsFormatter(items)
+    console.log(itemsList.toString())
 
 
     const addItem = (id) => {

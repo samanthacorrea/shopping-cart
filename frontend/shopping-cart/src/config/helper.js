@@ -12,6 +12,8 @@ const itemsQuantity = (items) => {
 
 
 const itemsFormatter = (items) => {
+    console.log("items formatter")
+    console.log(items)
     let itemsList = []
     for (let index in items) {
         itemsList.push(items[index])
